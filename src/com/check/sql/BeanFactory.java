@@ -19,7 +19,7 @@ public class BeanFactory{
 		for(Field field:fields){
 			field.setAccessible(true);
 			String fieldName=field.getName();
-			field.set(t, Converter.convertObject(field.getType(), rs.getObject((tableName+"_"+fieldName).toUpperCase())));
+			field.set(t, Converter.convertObject(field.getType(), rs.getObject(fieldName)));
 		}
 		return t;
 	}
