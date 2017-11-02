@@ -28,18 +28,22 @@ public class ReportAction extends RequestHandler {
 
 	private Map<String, Object> checkResult = new HashMap();
 
+	private List<String> dTagList = new ArrayList<>();
+	
+	private List<String> sTagList = new ArrayList<>();
+
 	public String init(ServerInterface serverInterface) throws Exception {
-		Connection conn1 = DBManager.getConnection();
-		Statement stmt1 = conn1.createStatement();
-		stmt1.execute("TRUNCATE TABLE allvar;");
-		stmt1.execute("TRUNCATE TABLE flagvar;");
-		DBManager.closeConnection(conn1);
-		
+//		Connection conn1 = DBManager.getConnection();
+//		Statement stmt1 = conn1.createStatement();
+//		stmt1.execute("TRUNCATE TABLE allvar;");
+//		stmt1.execute("TRUNCATE TABLE flagvar;");
+//		DBManager.closeConnection(conn1);
+//		
 //		
 //		print("表结构表中flag标识与变量字典中不一致", VarKey.CASE_EQUAL_IS_FLAG, new Dict(), "SELECT * FROM dict WHERE crf IN (SELECT tableName FROM structure WHERE tableType = 2) AND (flag IS NULL OR flag =\"\" ) ORDER BY dictId;");
 //
 //		
-//		print("表结构表中非flag标识与变量字典中不一致", VarKey.CASE_EQUAL_NOT_FLAG, new Dict(), "SELECT * FROM dict WHERE crf IN (SELECT tableName FROM structure WHERE tableType != 2) AND flag IS NOT NULL AND flag !=\"\" ORDER BY dictId;");
+// 		print("表结构表中非flag标识与变量字典中不一致", VarKey.CASE_EQUAL_NOT_FLAG, new Dict(), "SELECT * FROM dict WHERE crf IN (SELECT tableName FROM structure WHERE tableType != 2) AND flag IS NOT NULL AND flag !=\"\" ORDER BY dictId;");
 //
 //		
 //		print("变量名与表名一致", VarKey.CASE_TABLE_VAR_NAME, new Dict(), "SELECT * FROM dict WHERE bianliang IN (SELECT tableName FROM structure) ORDER BY dictId;");
@@ -65,24 +69,24 @@ public class ReportAction extends RequestHandler {
 //		stmt2.executeUpdate("INSERT INTO allvar (bianliang) SELECT DISTINCT bianliang FROM dict WHERE crf IN (SELECT tableName FROM structure WHERE tableType = 2);");
 //		stmt2.executeUpdate("INSERT INTO allvar (bianliang) SELECT bianliang FROM dict WHERE crf IN (SELECT tableName FROM structure WHERE tableType != 2);");
 //		DBManager.closeConnection(conn2);
-//		print("flag表与非flag表的重变量", VarKey.CASE_ALL_VAR_REPEAT, new Dict(), "select * from dict where bianliang IN (select bianliang from allvar where bianliang in(select bianliang from allvar group by bianliang having count(bianliang)>1) order by bianliang);");
+//		print("flag表与非flag表的重变量", VarKey.CASE_ALL_VAR_REPEAT, new Dict(), "select * from dict where bianliang IN (select a1.bianliang from allvar a1,allvar a2 where a1.dictId != a2.dictId AND a1.bianliang = a2.bianliang) order by bianliang;");
 //		
 //		
 //		Connection conn3 = DBManager.getConnection();
 //		Statement stmt3 = conn3.createStatement();
-//		stmt3.executeUpdate("INSERT INTO flagvar (bianliang) SELECT CONCAT(bianliang,flag) FROM dict WHERE crf IN (SELECT tableName FROM structure WHERE tableType = 2);");
+//		stmt3.executeUpdate("INSERT INTO flagvar (bianliang,originId) SELECT CONCAT(bianliang,flag),dictId FROM dict WHERE crf IN (SELECT tableName FROM structure WHERE tableType = 2);");
 //		DBManager.closeConnection(conn3);
-//		print("所有Flag表的重变量",VarKey.CASE_FLAG_VAR_REPEAT, new Dict(), "select * from flagvar where bianliang in(select bianliang from flagvar where bianliang in(select bianliang from flagvar group by bianliang having count(bianliang)>1) order by bianliang);");
+//		print("所有Flag表的重变量",VarKey.CASE_FLAG_VAR_REPEAT, new Dict(), "SELECT * FROM dict WHERE dictId IN(SELECT f1.originId FROM flagvar f1,flagvar f2 WHERE f1.dictId != f2.dictId AND f1.bianliang = f2.bianliang) ORDER BY bianliang;");
 //
 //		
-//		print("flag表的变量长度不一致", VarKey.CASE_SAME_VAR_LENGTH, new Dict(), "SELECT d1.* FROM dict AS d1,dict AS d2 WHERE (d1.dictId != d2.dictId AND d1.len != d2.len AND d1.bianliang = d2.bianliang AND d1.flag != d2.flag AND d1.flag != \"\" AND d1.flag IS NOT NULL) ORDER BY bianliang,dictId;");
+//		print("flag表的变量长度不一致", VarKey.CASE_SAME_VAR_LENGTH, new Dict(), "SELECT d1.* FROM dict AS d1,dict AS d2 WHERE (d1.dictId != d2.dictId AND d1.len != d2.len AND d1.bianliang = d2.bianliang AND d1.flag != d2.flag AND d1.flag != \"\" AND d1.flag IS NOT NULL) ORDER BY bianliang;");
 //		
 //		
 //		Connection conn4 = DBManager.getConnection();
 //		Statement stmt4 = conn4.createStatement();
 //		ResultSet rs4 = stmt4.executeQuery("SELECT dictId,bvalue FROM dict WHERE bvalue IS NOT NULL AND bvalue != \"\";");
-//		DBManager.closeConnection(conn4);
 //		checkRule(rs4);
+//		DBManager.closeConnection(conn4);
 //		int ruleSize = ruleErrorList.size();
 //		String ids = "";
 //		if (ruleSize > 0) {
@@ -93,18 +97,20 @@ public class ReportAction extends RequestHandler {
 //				}
 //			}
 //		}
+//		System.out.println("ids == > " +ids);
 //		if (!"".equals(ids) && ids != null) {
 //			print("bvalue编写不规范", VarKey.CASE_B_VAR_RULE, new Dict(), "SELECT * FROM dict WHERE dictId IN ("+ ids + ") ORDER BY dictId;");
 //		}
 //		
 //
-//		print("变量名命名有特殊符号", VarKey.CASE_VAR_SPEC_CODE, new Dict(), "SELECT dictId,bianliang FROM dict WHERE bianliang NOT REGEXP \"^[a-zA-Z0-9_]*$\" ORDER BY dictId;");
+//		print("变量名命名有特殊符号", VarKey.CASE_VAR_SPEC_CODE, new Dict(), "SELECT * FROM dict WHERE bianliang NOT REGEXP \"^[a-zA-Z0-9_]*$\" ORDER BY dictId;");
 //	
 //		
-//		print("flag标记有特殊符号", VarKey.CASE_Flag_SPEC_CODE, new Dict(), "SELECT DISTINCT flag FROM dict WHERE flag NOT REGEXP \"^[a-zA-Z0-9_]*$\" ORDER BY flag;");
+//		print("flag标记有特殊符号", VarKey.CASE_Flag_SPEC_CODE, new Dict(), "SELECT * FROM dict WHERE flag NOT REGEXP \"^[a-zA-Z0-9_]*$\" ORDER BY flag;");		
+//		serverInterface.setAttribute("data", checkResult);
+//		serverInterface.setAttribute("dTag", dTagList);
+//		serverInterface.setAttribute("sTag", sTagList);
 //		
-		serverInterface.setSessionAttribute("data", checkResult);
-		
 		return "/WEB-INF/report.jsp";
 	}
 
@@ -115,11 +121,16 @@ public class ReportAction extends RequestHandler {
 		boolean isFirst = true;
 		if (results.size() > 0) {
 			if (isFirst) {
-				checkResult.put("errorMsg", count + "." + errorMsg);
+				checkResult.put(tag+"_msg", count + "." + errorMsg);
 				count++;
 				isFirst = false;
 			}
 			checkResult.put(tag, results);
+			if(t instanceof Dict){				
+				dTagList .add(tag);
+			}else if(t instanceof Structrue){
+				sTagList.add(tag);
+			}
 		}
 	}
 

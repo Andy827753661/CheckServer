@@ -12,6 +12,21 @@ public class Dict {
 	private String page;
 	private String view;
 	private String flag;
+	private String range;
+	private String ques;
+	
+	public String getQues() {
+		return ques;
+	}
+	public void setQues(String ques) {
+		this.ques = ques;
+	}
+	public String getRange() {
+		return range;
+	}
+	public void setRange(String range) {
+		this.range = range;
+	}
 	public Integer getDictId() {
 		return dictId;
 	}
