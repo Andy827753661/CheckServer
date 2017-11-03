@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
+import com.check.config.WebConfig;
 import com.check.constant.VarKey;
 import com.check.db.DBManager;
 import com.check.pojo.Dict;
@@ -51,7 +52,9 @@ public class ReportAction extends RequestHandler {
 		print("变量名与表名一致", VarKey.CASE_TABLE_VAR_NAME, new Dict(), "SELECT * FROM dict WHERE bianliang IN (SELECT tableName FROM structure) ORDER BY dictId;");
 		
 		
-		print("变量名以表名开头", VarKey.CASE_TABLE_START_VAR, new Dict(), "SELECT * FROM dict WHERE bianliang LIKE CONCAT(crf,'%') ORDER BY dictId;");
+		if(WebConfig.ISPDC){
+		print("PDC课题变量名以表名开头", VarKey.CASE_TABLE_START_VAR, new Dict(), "SELECT * FROM dict WHERE bianliang LIKE CONCAT(crf,'%') ORDER BY dictId;");
+		}
 
 		
 		print("表名含有关键字", VarKey.CASE_TABLE_HAS_KEY, new Structrue(), "SELECT * FROM structure WHERE tableName IN (SELECT word FROM keyword) ORDER BY Id");
@@ -71,17 +74,17 @@ public class ReportAction extends RequestHandler {
 		stmt2.executeUpdate("INSERT INTO allvar (bianliang) SELECT DISTINCT bianliang FROM dict WHERE crf IN (SELECT tableName FROM structure WHERE tableType = 2);");
 		stmt2.executeUpdate("INSERT INTO allvar (bianliang) SELECT bianliang FROM dict WHERE crf IN (SELECT tableName FROM structure WHERE tableType != 2);");
 		DBManager.closeConnection(conn2);
-		print("flag表与非flag表的重变量", VarKey.CASE_ALL_VAR_REPEAT, new Dict(), "select * from dict where bianliang IN (select a1.bianliang from allvar a1,allvar a2 where a1.dictId != a2.dictId AND a1.bianliang = a2.bianliang) order by bianliang;");
+		print("flag表与非flag表的重变量", VarKey.CASE_ALL_VAR_REPEAT, new Dict(), "select * from dict where bianliang IN (select a1.bianliang from allvar a1,allvar a2 where a1.dictId != a2.dictId AND a1.bianliang = a2.bianliang) order by bianliang,dictId;");
 		
 		
 		Connection conn3 = DBManager.getConnection();
 		Statement stmt3 = conn3.createStatement();
 		stmt3.executeUpdate("INSERT INTO flagvar (bianliang,originId) SELECT CONCAT(bianliang,flag),dictId FROM dict WHERE crf IN (SELECT tableName FROM structure WHERE tableType = 2);");
 		DBManager.closeConnection(conn3);
-		print("所有Flag表的重变量",VarKey.CASE_FLAG_VAR_REPEAT, new Dict(), "SELECT * FROM dict WHERE dictId IN(SELECT f1.originId FROM flagvar f1,flagvar f2 WHERE f1.dictId != f2.dictId AND f1.bianliang = f2.bianliang) ORDER BY bianliang;");
+		print("所有Flag表的重变量",VarKey.CASE_FLAG_VAR_REPEAT, new Dict(), "SELECT * FROM dict WHERE dictId IN(SELECT f1.originId FROM flagvar f1,flagvar f2 WHERE f1.dictId != f2.dictId AND f1.bianliang = f2.bianliang) ORDER BY bianliang,dictId;");
 
 		
-		print("flag表的变量长度不一致", VarKey.CASE_SAME_VAR_LENGTH, new Dict(), "SELECT d1.* FROM dict AS d1,dict AS d2 WHERE (d1.dictId != d2.dictId AND d1.len != d2.len AND d1.bianliang = d2.bianliang AND d1.flag != d2.flag AND d1.flag != \"\" AND d1.flag IS NOT NULL) ORDER BY bianliang;");
+		print("flag表的变量长度不一致", VarKey.CASE_SAME_VAR_LENGTH, new Dict(), "SELECT DISTINCT d1.* FROM (SELECT * FROM dict WHERE flag is not NULL AND flag !=\"\") AS d1,(SELECT * FROM dict WHERE flag is not NULL AND flag !=\"\") AS d2 WHERE (d1.dictId != d2.dictId AND d1.len != d2.len AND d1.bianliang = d2.bianliang AND d1.flag != d2.flag AND d1.crf = d2.crf) ORDER BY bianliang,dictId;");
 		
 		
 		Connection conn4 = DBManager.getConnection();

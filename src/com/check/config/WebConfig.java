@@ -8,7 +8,10 @@ import java.util.Map;
 public class WebConfig {
 	
 	//核查课题名称
-	public static String PROJECTNAME = "E201716_金仕生物_信力人工生物心脏瓣膜";
+	public static String PROJECTNAME = "E201715_上海心玮医疗科技有限公司_左心耳封堵器";
+	
+	//是否是PDC课题
+	public static boolean ISPDC = true;
 	
 	//核查次数
 	public static String TESTNUM = "1";
