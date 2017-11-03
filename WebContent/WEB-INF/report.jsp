@@ -1,5 +1,8 @@
-<%@page import="com.check.pojo.Structrue"%>
-<%@page import="com.check.constant.VarKey"%>
+<%@ page import="com.check.config.WebConfig"%>
+<%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="java.util.Date"%>
+<%@ page import="com.check.pojo.Structrue"%>
+<%@ page import="com.check.constant.VarKey"%>
 <%@ page import="com.check.pojo.Dict"%>
 <%@ page import="java.util.List"%>
 <%@	page import="java.util.Map"%>
@@ -11,7 +14,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>变量字典核查报告</title>
+<title>变量字典核查报告<%=WebConfig.TITLE%></title>
 <style type="text/css">
 table {
 	margin-left: 2%;
@@ -74,10 +77,9 @@ textarea {
 </style>
 </head>
 <body>
-	<div class="head" align="center">E201716_金仕生物_信力人工生物心脏瓣膜变量字典核查报告
-	</div>
+	<div class="head" align="center"><%=WebConfig.PROJECTNAME+WebConfig.TITLE%></div>
 	<br>
-	<div class="neck" align="right">测试次数：第1次</div>
+	<div class="neck" align="right">核查次数：第<%= WebConfig.TESTNUM%>次</div>
 	<hr>
 	<div class="div-method">一、人工核查</div>
 	<table border="1">
@@ -452,8 +454,14 @@ textarea {
 	</table>
 	<table class="foot">
 		<tr>
-			<td align="center" width="50%"><b><h3>核查时间：</h3></b></td>
-			<td align="center" width="50%"><b><h3>核查人签字：</h3></b></td>
+			<td align="center" width="50%"><b><h3>核查时间：
+			<%
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String date = sdf.format(new Date());
+			%>
+			<%= date %>
+			</h3></b></td>
+			<td align="center" width="50%"><b><h3>核查人签字：<%= WebConfig.CHECKER %></h3></b></td>
 		</tr>
 	</table>
 </body>

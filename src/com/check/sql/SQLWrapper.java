@@ -12,7 +12,7 @@ import com.check.config.WebConfig;
 public class SQLWrapper {
 	public static String sqlOf(String sql,Map<String, Object> map)throws Exception{
 		if(map==null){
-			System.out.println("Project:"+WebConfig.PROJECTNAME+" Invoke SQL -> \n"+sql);
+			System.out.println("Project:"+WebConfig.DBNAME+" Invoke SQL -> \n"+sql);
 			return sql;
 		}
 		else{
@@ -43,7 +43,7 @@ public class SQLWrapper {
 							result+=str.replace("{"+fieldName+"}", "'"+(new SimpleDateFormat(WebConfig.YYYYMMDDHHMMSS).format((Timestamp)object))+"'");
 						}
 						else{
-							throw new Exception("Project:"+WebConfig.PROJECTNAME+" 封装SQL语句失败：原始类型是"+object.getClass());
+							throw new Exception("Project:"+WebConfig.DBNAME+" 封装SQL语句失败：原始类型是"+object.getClass());
 						}
 					}
 				}
@@ -51,7 +51,7 @@ public class SQLWrapper {
 					result+=str;
 				}
 			}
-			System.out.println("Project:"+WebConfig.PROJECTNAME+" Invoke SQL -> \n"+result);
+			System.out.println("Project:"+WebConfig.DBNAME+" Invoke SQL -> \n"+result);
 			return result;
 		}
 	}

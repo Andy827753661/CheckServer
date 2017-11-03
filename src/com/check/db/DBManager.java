@@ -11,7 +11,7 @@ public class DBManager {
 	
 	
 	public static String CLASSNAME="com.mysql.jdbc.Driver";
-	public static String DEFAULTDATABASE=WebConfig.PROJECTNAME;
+	public static String DEFAULTDATABASE=WebConfig.DBNAME;
 	public static String URL="jdbc:mysql://127.0.0.1:3306/";
 	
 	public static String USERNAME="root";

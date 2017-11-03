@@ -15,7 +15,7 @@ import com.check.config.WebConfig;
 public class PageEncodingFilter implements Filter {
 
 	public void init(FilterConfig arg0) throws ServletException {
-		System.out.println(com.check.config.WebConfig.PROJECTNAME + "×Ö·û¹ýÂËÆô¶¯£¡");
+		System.out.println(com.check.config.WebConfig.DBNAME + "×Ö·û¹ýÂËÆô¶¯£¡");
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response,
@@ -32,6 +32,6 @@ public class PageEncodingFilter implements Filter {
 	}
 
 	public void destroy() {
-		System.out.println(com.check.config.WebConfig.PROJECTNAME + "×Ö·û¹ýÂËÍ£Ö¹£¡");
+		System.out.println(com.check.config.WebConfig.DBNAME + "×Ö·û¹ýÂËÍ£Ö¹£¡");
 	}
 }

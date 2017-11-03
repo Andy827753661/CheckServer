@@ -7,9 +7,21 @@ import java.util.Map;
 
 public class WebConfig {
 	
-	public static String PROJECTNAME = "check";
+	//核查课题名称
+	public static String PROJECTNAME = "E201716_金仕生物_信力人工生物心脏瓣膜";
+	
+	//核查次数
+	public static String TESTNUM = "1";
+	
+	//连接数据库名称
+	public static String DBNAME = "check";
+	
+	//核查人签名
+	public static String CHECKER = "张波";
 
-	public static String TITLENAME = "变量字典核查报告";
+/*======================================================================*/	
+	
+	public static String TITLE = "变量字典核查报告";
 	
 	public static String YYYYMMDD="yyyy-MM-dd";
 	
