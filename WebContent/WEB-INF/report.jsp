@@ -192,15 +192,18 @@ textarea {
 			<td width="10%">范围</td>
 		</tr>
 		<%
-			String[] colorStr = { "#FFFFBB", "#BBFFEE", "#E8CCFF", "#DDDDDD",
+			String[] colorStr = { "#33CCFF", "#FFFF77", "#E8CCFF", "#DDDDDD",
 					"#FFFF77", "#FFCCCC" };
+			Map<Integer, Integer> bdIdMap = (Map) request.getAttribute("bdTag");
 			List<String> dTagList = (List) request.getAttribute("dTag");
 			if (dTagList != null && dTagList.size() > 0) {
 				Map<String, Object> checkResult = (Map) request
 						.getAttribute("data");
 				for (String strD : dTagList) {
 					String tempBl = "";
-					int colorIndex = 0;
+					String bl = "";
+					int blColorIndex = 0;
+					int lenColorIndex = 0;
 					if (checkResult.containsKey(strD)) {
 		%>
 		<tr>
@@ -209,31 +212,45 @@ textarea {
 		<%
 			List<Dict> dicts = (List) checkResult.get(strD);
 						for (Dict dict : dicts) {
+							int index = -1;
+							bl = dict.getBianliang();
+							int dictId = dict.getDictId();
+							if (VarKey.CASE_DICT_HAS_BD.equals(strD)
+									&& bdIdMap.containsKey(dictId)) {
+								index = bdIdMap.get(dictId);
+							}
 		%>
 		<tr>
-			<td><%=dict.getDictId()%></td>
 			<%
-				if (VarKey.CASE_TABLE_VAR_NAME.equals(strD)
+				if (index == 1) {
+			%>
+			<td bgcolor="<%=colorStr[4]%>"><%=dictId%></td>
+			<%
+				} else {
+			%>
+			<td><%=dictId%></td>
+			<%
+				}
+								if (VarKey.CASE_TABLE_VAR_NAME.equals(strD)
 										|| VarKey.CASE_TABLE_START_VAR.equals(strD)
 										|| VarKey.CASE_VAR_HAS_KEY.equals(strD)
 										|| VarKey.CASE_ALL_VAR_REPEAT.equals(strD)
 										|| VarKey.CASE_FLAG_VAR_REPEAT.equals(strD)
 										|| VarKey.CASE_VAR_LENGTH_8.equals(strD)
 										|| VarKey.CASE_VAR_SPEC_CODE.equals(strD)
-										|| VarKey.CASE_VAR_LENGTH_10.equals(strD)) {
+										|| VarKey.CASE_VAR_LENGTH_10.equals(strD)
+										|| index == 2) {
 									if (VarKey.CASE_ALL_VAR_REPEAT.equals(strD)
 											|| VarKey.CASE_FLAG_VAR_REPEAT
 													.equals(strD)) {
-										String bl = dict.getBianliang();
 										if (!tempBl.equals(bl)) {
-											colorIndex++;
-											if (colorIndex == 4) {
-												colorIndex = 0;
+											blColorIndex++;
+											if (blColorIndex == 2) {
+												blColorIndex = 0;
 											}
 										}
-										tempBl = bl;
 			%>
-			<td bgcolor="<%=colorStr[colorIndex]%>"><%=bl%></td>
+			<td bgcolor="<%=colorStr[blColorIndex]%>"><%=bl%></td>
 			<%
 				} else {
 			%>
@@ -245,22 +262,68 @@ textarea {
 			<td><%=dict.getBianliang()%></td>
 			<%
 				}
-								if (VarKey.CASE_SAME_VAR_LENGTH.equals(strD)) {
+								if (VarKey.CASE_SAME_VAR_LENGTH.equals(strD)
+										|| VarKey.CASE_SAME_VAR_LENGTH.equals(strD)
+										|| index == 3) {
+									if (VarKey.CASE_SAME_VAR_LENGTH.equals(strD)) {
+										if (!tempBl.equals(bl)) {
+											lenColorIndex++;
+											if (lenColorIndex == 2) {
+												lenColorIndex = 0;
+											}
+										}
+			%>
+			<td bgcolor="<%=colorStr[lenColorIndex]%>"><%=dict.getLen()%></td>
+			<%
+				} else {
 			%>
 			<td bgcolor="<%=colorStr[4]%>"><%=dict.getLen()%></td>
 			<%
-				} else {
+				}
+								} else {
 			%>
 			<td><%=dict.getLen()%></td>
 			<%
 				}
+								tempBl = bl;
+								if (index == 4) {
+			%>
+			<td bgcolor="<%=colorStr[4]%>"><%=dict.getCrf()%></td>
+			<%
+				} else {
 			%>
 			<td><%=dict.getCrf()%></td>
+			<%
+				}
+								if (index == 5) {
+			%>
+			<td bgcolor="<%=colorStr[4]%>"><%=dict.getCrfname()%></td>
+			<%
+				} else {
+			%>
 			<td><%=dict.getCrfname()%></td>
+			<%
+				}
+								if (index == 6) {
+			%>
+			<td bgcolor="<%=colorStr[4]%>"><%=dict.getBname()%></td>
+			<%
+				} else {
+			%>
 			<td><%=dict.getBname()%></td>
+			<%
+				}
+								if (index == 7) {
+			%>
+			<td bgcolor="<%=colorStr[4]%>"><%=dict.getPaixu()%></td>
+			<%
+				} else {
+			%>
 			<td><%=dict.getPaixu()%></td>
 			<%
-				if (VarKey.CASE_B_VAR_RULE.equals(strD)) {
+				}
+								if (VarKey.CASE_B_VAR_RULE.equals(strD)
+										|| index == 8) {
 			%>
 			<td bgcolor="<%=colorStr[4]%>"><%=dict.getBvalue()%></td>
 			<%
@@ -269,14 +332,29 @@ textarea {
 			<td><%=dict.getBvalue()%></td>
 			<%
 				}
+								if (index == 9) {
 			%>
-
+			<td bgcolor="<%=colorStr[4]%>"><%=dict.getPage()%></td>
+			<%
+				} else {
+			%>
 			<td><%=dict.getPage()%></td>
+			<%
+				}
+								if (index == 10) {
+			%>
+			<td bgcolor="<%=colorStr[4]%>"><%=dict.getView()%></td>
+			<%
+				} else {
+			%>
 			<td><%=dict.getView()%></td>
 			<%
-				if (VarKey.CASE_EQUAL_IS_FLAG.equals(strD)
+				}
+								if (VarKey.CASE_EQUAL_IS_FLAG.equals(strD)
 										|| VarKey.CASE_EQUAL_NOT_FLAG.equals(strD)
-										|| VarKey.CASE_Flag_SPEC_CODE.equals(strD)) {
+										|| VarKey.CASE_Flag_SPEC_CODE.equals(strD)
+										|| VarKey.CASE_FLAG_V1_V2.equals(strD)
+										|| index == 11) {
 			%>
 			<td bgcolor="<%=colorStr[4]%>"><%=dict.getFlag()%></td>
 			<%
@@ -285,8 +363,16 @@ textarea {
 			<td><%=dict.getFlag()%></td>
 			<%
 				}
+								if (index == 12) {
+			%>
+			<td bgcolor="<%=colorStr[4]%>"><%=dict.getRange()%></td>
+			<%
+				} else {
 			%>
 			<td><%=dict.getRange()%></td>
+			<%
+				}
+			%>
 		</tr>
 		<%
 			}
@@ -364,10 +450,10 @@ textarea {
 			}
 		%>
 	</table>
-	<table border="1" class="foot">
+	<table class="foot">
 		<tr>
-			<td align="center" width="50%">核查时间：</td>
-			<td align="center" width="50%">核查人签字：</td>
+			<td align="center" width="50%"><b><h3>核查时间：</h3></b></td>
+			<td align="center" width="50%"><b><h3>核查人签字：</h3></b></td>
 		</tr>
 	</table>
 </body>

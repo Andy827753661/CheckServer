@@ -30,4 +30,7 @@ public class VarKey {
 	
 	public static final String CASE_Flag_SPEC_CODE = "flag_spec_code";
 
+	public static final String CASE_DICT_HAS_BD = "dict_has_bd";
+	
+	public static final String CASE_FLAG_V1_V2 = "flag_v1_v2";
 }
