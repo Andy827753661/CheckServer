@@ -23,7 +23,9 @@ import ejw.ServerInterface;
 
 public class ReportAction extends RequestHandler {
 
-	private int count = 1;
+	private int dECount = 1;
+	
+	private int sECount = 1;
 
 	private Map<Integer,Integer> bdIdMap = new HashMap<>();
 	
@@ -40,6 +42,8 @@ public class ReportAction extends RequestHandler {
 		Statement stmt1 = conn1.createStatement();
 		stmt1.execute("TRUNCATE TABLE allvar;");
 		stmt1.execute("TRUNCATE TABLE flagvar;");
+		stmt1.execute("DELETE FROM dict WHERE crf IN (\"subject\",\"site\");");
+		stmt1.execute("DELETE FROM structure WHERE tableName IN (\"subject\",\"site\");");
 		DBManager.closeConnection(conn1);
 		
 		
@@ -152,17 +156,15 @@ public class ReportAction extends RequestHandler {
 			throws Exception {
 		CRUD crud = new CRUD();
 		List<T> results = crud.getBeanFactory().queryBeans(sql, t);
-		boolean isFirst = true;
 		if (results.size() > 0) {
-			if (isFirst) {
-				checkResult.put(tag+"_msg", count + "." + errorMsg);
-				count++;
-				isFirst = false;
-			}
 			checkResult.put(tag, results);
 			if(t instanceof Dict){				
+				checkResult.put(tag+"_msg", dECount + "." + errorMsg);
+				dECount++;
 				dTagList .add(tag);
 			}else if(t instanceof Structrue){
+				checkResult.put(tag+"_msg", sECount + "." + errorMsg);
+				sECount++;
 				sTagList.add(tag);
 			}
 		}
