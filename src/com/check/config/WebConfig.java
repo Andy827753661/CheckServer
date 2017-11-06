@@ -8,10 +8,10 @@ import java.util.Map;
 public class WebConfig {
 	
 	//核查课题名称
-	public static String PROJECTNAME = "E201721_宣武医院_主动脉弓上颅外动脉狭窄";
+	public static String PROJECTNAME = "P102_强生医疗_膝关节";
 	
 	//是否是PDC课题
-	public static boolean ISPDC = false;
+	public static boolean ISPDC = true;
 	
 	//核查次数
 	public static String TESTNUM = "1";

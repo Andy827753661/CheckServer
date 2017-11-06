@@ -101,7 +101,7 @@ textarea {
 			</select></td>
 		</tr>
 		<tr>
-			<td>2.核查表结构的表名是否为规范名称，规范名称见附表1。</td>
+			<td>2.核查表结构的表名是否为规范名称。</td>
 			<td align="center"><select>
 					<option value="null"></option>
 					<option>通过</option>

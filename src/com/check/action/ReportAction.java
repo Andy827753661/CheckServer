@@ -57,7 +57,7 @@ public class ReportAction extends RequestHandler {
 		
 		
 		if(WebConfig.ISPDC){
-		print("PDC课题变量名以表名开头", VarKey.CASE_TABLE_START_VAR, new Dict(), "SELECT * FROM dict WHERE bianliang LIKE CONCAT(crf,'%') ORDER BY dictId;");
+		print("PDC课题变量名以表名开头", VarKey.CASE_TABLE_START_VAR, new Dict(), "SELECT * FROM dict WHERE bianliang LIKE CONCAT(crf,'%') AND bianliang NOT LIKE CONCAT(crf,\"_num\") ORDER BY dictId;");
 		}
 
 		
@@ -67,10 +67,10 @@ public class ReportAction extends RequestHandler {
 		print("变量名含有关键字", VarKey.CASE_VAR_HAS_KEY, new Dict(), "SELECT * FROM dict WHERE bianliang IN (SELECT word FROM keyword) ORDER BY dictId");
 
 		
-		print("多表变量长度大于8", VarKey.CASE_VAR_LENGTH_8 , new Dict(), "SELECT * FROM dict WHERE LENGTH(bianliang)>8 AND flag IS NOT NULL AND flag!=\"\" ORDER BY dictId;");
+		print("多表变量长度大于8", VarKey.CASE_VAR_LENGTH_8 , new Dict(), "SELECT * FROM dict WHERE LENGTH(bianliang)>8 AND bianliang NOT LIKE CONCAT('bz_',crf) AND flag IS NOT NULL AND flag!=\"\" ORDER BY dictId;");
 
 		
-		print("单表变量长度大于10", VarKey.CASE_VAR_LENGTH_10, new Dict(), "SELECT * FROM dict WHERE LENGTH(bianliang)>10 AND (flag IS NULL OR flag=\"\") ORDER BY dictId;");
+		print("单表变量长度大于10", VarKey.CASE_VAR_LENGTH_10, new Dict(), "SELECT * FROM dict WHERE LENGTH(bianliang)>10 AND bianliang NOT LIKE CONCAT('bz_',crf) AND (flag IS NULL OR flag=\"\") ORDER BY dictId;");
 
 		
 		Connection conn2 = DBManager.getConnection();
