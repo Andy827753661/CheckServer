@@ -92,7 +92,7 @@ textarea {
 			<td width="30%" align="center">是否通过</td>
 		</tr>
 		<tr>
-			<td>1.变量字典dictId列应为顺序数字，不能跳号、同号、空值。</td>
+			<td>1.表结构表中的“表类型”是否与“标识变量”一致。</td>
 			<td align="center"><select>
 					<option value="null"></option>
 					<option>通过</option>
