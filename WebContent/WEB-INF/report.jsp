@@ -223,7 +223,13 @@ textarea {
 						.getAttribute("data");
 				for (String strD : dTagList) {
 					String tempBl = "";
+					
 					String bl = "";
+					String pageIndex = "";
+					String view = "";
+					String flag = "";
+					String range = "";
+					
 					int blColorIndex = 0;
 					int lenColorIndex = 0;
 					if (checkResult.containsKey(strD)) {
@@ -235,7 +241,24 @@ textarea {
 			List<Dict> dicts = (List) checkResult.get(strD);
 						for (Dict dict : dicts) {
 							int index = -1;
+							
 							bl = dict.getBianliang();
+							pageIndex = dict.getPage();
+							view = dict.getView();
+							flag = dict.getFlag();
+							range = dict.getRange(); 
+							if(pageIndex == null || pageIndex.equalsIgnoreCase("NULL")){
+								pageIndex = "";
+							}
+							if(view == null || view.equalsIgnoreCase("NULL")){
+								view = "";
+							}
+							if(flag == null || flag.equalsIgnoreCase("NULL")){
+								flag = "";
+							}
+							if(range == null || range.equalsIgnoreCase("NULL")){
+								range = "";
+							}
 							int dictId = dict.getDictId();
 							if (VarKey.CASE_DICT_HAS_BD.equals(strD)
 									&& bdIdMap.containsKey(dictId)) {
@@ -356,20 +379,20 @@ textarea {
 				}
 								if (index == 9) {
 			%>
-			<td bgcolor="<%=colorStr[4]%>"><%=dict.getPage()%></td>
+			<td bgcolor="<%=colorStr[4]%>"><%=pageIndex%></td>
 			<%
 				} else {
 			%>
-			<td><%=dict.getPage()%></td>
+			<td><%=pageIndex%></td>
 			<%
 				}
 								if (index == 10) {
 			%>
-			<td bgcolor="<%=colorStr[4]%>"><%=dict.getView()%></td>
+			<td bgcolor="<%=colorStr[4]%>"><%=view%></td>
 			<%
 				} else {
 			%>
-			<td><%=dict.getView()%></td>
+			<td><%=view%></td>
 			<%
 				}
 								if (VarKey.CASE_EQUAL_IS_FLAG.equals(strD)
@@ -378,20 +401,20 @@ textarea {
 										|| VarKey.CASE_FLAG_V1_V2.equals(strD)
 										|| index == 11) {
 			%>
-			<td bgcolor="<%=colorStr[4]%>"><%=dict.getFlag()%></td>
+			<td bgcolor="<%=colorStr[4]%>"><%=flag%></td>
 			<%
 				} else {
 			%>
-			<td><%=dict.getFlag()%></td>
+			<td><%=flag%></td>
 			<%
 				}
 								if (index == 12) {
 			%>
-			<td bgcolor="<%=colorStr[4]%>"><%=dict.getRange()%></td>
+			<td bgcolor="<%=colorStr[4]%>"><%=range%></td>
 			<%
 				} else {
 			%>
-			<td><%=dict.getRange()%></td>
+			<td><%=range%></td>
 			<%
 				}
 			%>
