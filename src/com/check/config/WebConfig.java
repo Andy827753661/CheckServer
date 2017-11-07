@@ -8,10 +8,10 @@ import java.util.Map;
 public class WebConfig {
 	
 	//核查课题名称
-	public static String PROJECTNAME = "P093_人民医院_抗胸腺球蛋白";
+	public static String PROJECTNAME = "小儿麻醉";
 	
 	//是否是PDC课题
-	public static boolean ISPDC = true;
+	public static boolean ISPDC = false;
 	
 	//连接数据库名称
 	public static String DBNAME = "check";

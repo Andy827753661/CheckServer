@@ -189,7 +189,7 @@ textarea {
 		</tr>
 	</table>
 	<div class="div-comment">
-		备注：
+		人工核查未通过情况说明：
 		<textarea cols="50" rows="10" style="resize: none"></textarea>
 	</div>
 	<div class="div-method">二、程序核查</div>
