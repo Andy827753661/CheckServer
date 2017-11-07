@@ -34,17 +34,16 @@ td {
 
 .head {
 	background: #CCEEFF;
+	height: 40px;
 	padding-top: 20px;
 	padding-bottom: 20px;
 	margin-bottom: 5px;
-	font-size: xx-large;
 	font-weight: bolder;
 	margin-top: 20px;
 }
 
 .neck {
-	font-size: x-large;
-	padding-right: 5%;
+	font-size: large;
 	font-weight: bold;
 }
 
@@ -52,11 +51,6 @@ td {
 	font-size: x-large;
 	padding: 2%;
 	font-weight: bold;
-}
-
-.foot {
-	margin-top: 80px;
-	margin-bottom: 80px;
 }
 
 textarea {
@@ -81,9 +75,21 @@ textarea {
 </style>
 </head>
 <body>
-	<div class="head" align="center"><%=WebConfig.PROJECTNAME+WebConfig.TITLE%></div>
+	<%! String fontSize = WebConfig.getFontSize();  %>
+	<div class="head" align="center" style="font-size: <%=fontSize%>;"><%=WebConfig.PROJECTNAME+WebConfig.TITLE%></div>
 	<br>
-	<div class="neck" align="right">核查次数：第<%= WebConfig.TESTNUM%>次</div>
+	<table class="neck">
+		<tr>
+			<td align="center" width="50%"><b>核查时间：
+			<%
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String date = sdf.format(new Date());
+			%>
+			<%= date %>
+			</b></td>
+			<td align="center" width="50%"><b>核查人：<%= WebConfig.CHECKER %></b></td>
+		</tr>
+	</table>
 	<hr>
 	<div class="div-method">一、人工核查</div>
 	<table border="1">
@@ -465,18 +471,6 @@ textarea {
 		<%
 			}
 		%>
-	</table>
-	<table class="foot">
-		<tr>
-			<td align="center" width="50%"><b><h3>核查时间：
-			<%
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				String date = sdf.format(new Date());
-			%>
-			<%= date %>
-			</h3></b></td>
-			<td align="center" width="50%"><b><h3>核查人签字：<%= WebConfig.CHECKER %></h3></b></td>
-		</tr>
 	</table>
 </body>
 </html>

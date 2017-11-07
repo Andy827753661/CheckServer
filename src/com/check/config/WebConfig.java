@@ -8,13 +8,10 @@ import java.util.Map;
 public class WebConfig {
 	
 	//核查课题名称
-	public static String PROJECTNAME = "P102_强生医疗_膝关节";
+	public static String PROJECTNAME = "P093_人民医院_抗胸腺球蛋白";
 	
 	//是否是PDC课题
 	public static boolean ISPDC = true;
-	
-	//核查次数
-	public static String TESTNUM = "1";
 	
 	//连接数据库名称
 	public static String DBNAME = "check";
@@ -45,6 +42,16 @@ public class WebConfig {
 	public static Map crfsSubMap = new HashMap();
 
 	public static int crftotal = 9;
+	
+	public static String getFontSize(){
+		String fontSize = "";
+		if(PROJECTNAME.length() <= 30 && PROJECTNAME.length() > 0){
+			fontSize = "xx-large";
+		}else{
+			fontSize = "x-large";
+		}
+		return fontSize;
+	}
 
 	public static String substringNum(String str, int length) {
 		if (str.length() > length) {
