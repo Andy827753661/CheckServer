@@ -33,4 +33,10 @@ public class VarKey {
 	public static final String CASE_DICT_HAS_BD = "dict_has_bd";
 	
 	public static final String CASE_FLAG_V1_V2 = "flag_v1_v2";
+	
+	public static final String CASE_TYPE_FLAG = "type_flag";
+	
+	public static final String CASE_STRUCTURE_KEY = "structure_key";
+	
+	public static final String CASE_STRUCTURE_TABLE_NAME = "structure_table_name";
 }

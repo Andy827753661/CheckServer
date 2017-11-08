@@ -61,9 +61,6 @@ public class ReportAction extends RequestHandler {
 		}
 
 		
-		print("表名含有关键字", VarKey.CASE_TABLE_HAS_KEY, new Structrue(), "SELECT * FROM structure WHERE tableName IN (SELECT word FROM keyword) ORDER BY Id");
-
-		
 		print("变量名含有关键字", VarKey.CASE_VAR_HAS_KEY, new Dict(), "SELECT * FROM dict WHERE bianliang IN (SELECT word FROM keyword) ORDER BY dictId");
 
 		
@@ -144,6 +141,18 @@ public class ReportAction extends RequestHandler {
 		print("变量字典中访视标记不能形同V1，V2...", VarKey.CASE_FLAG_V1_V2,new Dict(), "select * from dict where dictId in (select min(dictId) from dict where flag not like \"v%\" AND flag != \"\" AND flag IS NOT NULL group by flag);");
 
 		
+		/**********Structrue**********/
+		print("表名含有关键字", VarKey.CASE_TABLE_HAS_KEY, new Structrue(), "SELECT * FROM structure WHERE tableName IN (SELECT word FROM keyword) ORDER BY Id");
+
+		
+		print("表结构表中的“表类型”与“标识”不一致", VarKey.CASE_TYPE_FLAG, new Structrue(), "SELECT * FROM structure WHERE (tablelx = \"单表\"   AND ((tableItem IS NOT NULL AND tableItem != \"\") OR (typeExp IS NOT NULL AND typeExp != \"\"))) OR (tablelx = \"多表\"   AND ((tableItem IS NULL OR tableItem =\"\") OR (typeExp IS NULL OR typeExp = \"\")));");
+
+		
+		print("表结构表中的“关键字”不符合“表名_id”的形式", VarKey.CASE_STRUCTURE_KEY, new Structrue(), "SELECT * FROM structure WHERE tableKey NOT LIKE CONCAT(tableName,\"_id\");");
+		
+		
+		print("表结构表的表名不是字母和数字的组合", VarKey.CASE_STRUCTURE_TABLE_NAME, new Structrue(), "SELECT * FROM structure WHERE tableName NOT REGEXP \"^[a-zA-Z0-9]*$\";");
+		
 		serverInterface.setAttribute("data", checkResult);
 		serverInterface.setAttribute("dTag", dTagList);
 		serverInterface.setAttribute("sTag", sTagList);
@@ -169,6 +178,32 @@ public class ReportAction extends RequestHandler {
 			}
 		}
 	}
+	
+	
+	@SuppressWarnings("unused")
+	private <T> void print(String errorMsg, String tag, T t, String[] sqlList)
+			throws Exception {
+		CRUD crud = new CRUD();
+		List<T> results = new ArrayList<>();
+		for(String sql : sqlList){
+			List<T> result = crud.getBeanFactory().queryBeans(sql, t);
+			results.addAll(result);
+		}
+		
+		if (results.size() > 0) {
+			checkResult.put(tag, results);
+			if(t instanceof Dict){				
+				checkResult.put(tag+"_msg", dECount + "." + errorMsg);
+				dECount++;
+				dTagList .add(tag);
+			}else if(t instanceof Structrue){
+				checkResult.put(tag+"_msg", sECount + "." + errorMsg);
+				sECount++;
+				sTagList.add(tag);
+			}
+		}
+	}
+
 
 	private void checkRule(ResultSet rs) {
 		try {

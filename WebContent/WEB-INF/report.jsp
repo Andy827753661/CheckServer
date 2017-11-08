@@ -31,6 +31,10 @@ td {
 	height: 25px;
 	padding: 5px;
 }
+.td-height {
+	height: 35px;
+	padding: 5px;
+}
 
 .head {
 	background: #CCEEFF;
@@ -45,6 +49,10 @@ td {
 .neck {
 	font-size: large;
 	font-weight: bold;
+}
+
+.foot{
+	margin-top: 50px;
 }
 
 .div-method {
@@ -94,11 +102,11 @@ textarea {
 	<div class="div-method">一、人工核查</div>
 	<table border="1">
 		<tr>
-			<td width="70%" align="center">核查项目</td>
-			<td width="30%" align="center">是否通过</td>
+			<td width="70%" align="center" class="td-height">核查项目</td>
+			<td width="30%" align="center" >是否通过</td>
 		</tr>
 		<tr>
-			<td>1.表结构表中的“表类型”是否与“标识变量”一致。</td>
+			<td class="td-height">1.核查表结构的表名是否为规范名称。</td>
 			<td align="center"><select>
 					<option value="null"></option>
 					<option>通过</option>
@@ -107,7 +115,7 @@ textarea {
 			</select></td>
 		</tr>
 		<tr>
-			<td>2.核查表结构的表名是否为规范名称。</td>
+			<td class="td-height">2.日期时间组合的变量要求变量后缀为：dy dm dd th tm ts。</td>
 			<td align="center"><select>
 					<option value="null"></option>
 					<option>通过</option>
@@ -116,7 +124,7 @@ textarea {
 			</select></td>
 		</tr>
 		<tr>
-			<td>3.核查表结构的表名为字母和数字的组合。</td>
+			<td class="td-height">3.实验室检测项、单位及评价要求变量后缀举例为：rbc rbcu rbce。</td>
 			<td align="center"><select>
 					<option value="null"></option>
 					<option>通过</option>
@@ -125,7 +133,7 @@ textarea {
 			</select></td>
 		</tr>
 		<tr>
-			<td>4.日期时间组合的变量要求变量后缀为：dy dm dd th tm ts。</td>
+			<td class="td-height">4.随访中随访状态变量名为isfw。</td>
 			<td align="center"><select>
 					<option value="null"></option>
 					<option>通过</option>
@@ -134,7 +142,7 @@ textarea {
 			</select></td>
 		</tr>
 		<tr>
-			<td>5.实验室检测项、单位及评价要求变量后缀举例为：rbc rbcu rbce。</td>
+			<td class="td-height">5.备注页备注内容变量名为content。</td>
 			<td align="center"><select>
 					<option value="null"></option>
 					<option>通过</option>
@@ -143,7 +151,7 @@ textarea {
 			</select></td>
 		</tr>
 		<tr>
-			<td>6.随访中随访状态变量名为isfw。</td>
+			<td class="td-height">6.PDC课题中每表中备注变量应为bz_表名。</td>
 			<td align="center"><select>
 					<option value="null"></option>
 					<option>通过</option>
@@ -152,7 +160,7 @@ textarea {
 			</select></td>
 		</tr>
 		<tr>
-			<td>7.备注页备注内容变量名为content。</td>
+			<td class="td-height">7.PDC课题中多次添加的表必须设置唯一标识符变量且顺序号为1，唯一标识符变量名为表名_num，EDC课题不能设置此变量。</td>
 			<td align="center"><select>
 					<option value="null"></option>
 					<option>通过</option>
@@ -161,25 +169,7 @@ textarea {
 			</select></td>
 		</tr>
 		<tr>
-			<td>8.PDC课题中每表中备注变量应为bz_表名。</td>
-			<td align="center"><select>
-					<option value="null"></option>
-					<option>通过</option>
-					<option>未通过</option>
-					<option>不适用</option>
-			</select></td>
-		</tr>
-		<tr>
-			<td>9.PDC课题中多次添加的表必须设置唯一标识符变量且顺序号为1，唯一标识符变量名为表名_num，EDC课题不能设置此变量。</td>
-			<td align="center"><select>
-					<option value="null"></option>
-					<option>通过</option>
-					<option>未通过</option>
-					<option>不适用</option>
-			</select></td>
-		</tr>
-		<tr>
-			<td>10.变量字典中范围列中内容要符合规则。</td>
+			<td class="td-height">8.变量字典中范围列中内容要符合规则。</td>
 			<td align="center"><select>
 					<option value="null"></option>
 					<option>通过</option>
@@ -439,13 +429,13 @@ textarea {
 	<table border="1">
 		<tr>
 			<td width="10%">Id</td>
-			<td width="20%">数据表名</td>
-			<td width="20%">表明描述</td>
+			<td width="15%">表名</td>
+			<td width="15%">表名描述</td>
+			<td width="15%">表关键字</td>
 			<td width="10%">表类型</td>
-
-			<td width="10%">表标识</td>
-			<td width="20%">表链接</td>
-			<td width="10%">表索引</td>
+			<td width="10%">类型数</td>
+			<td width="10%">类型标识</td>
+			<td width="15%">标识说明</td>
 		</tr>
 		<%
 			List<String> sTagList = (List) request.getAttribute("sTag");
@@ -456,7 +446,7 @@ textarea {
 					if (checkResult.containsKey(strS)) {
 		%>
 		<tr>
-			<td colspan="7" bgcolor="<%=colorStr[5]%>"><%=checkResult.get(strS + "_msg")%></td>
+			<td colspan="8" bgcolor="<%=colorStr[5]%>"><%=checkResult.get(strS + "_msg")%></td>
 		</tr>
 		<%
 			List<Structrue> structrues = (List) checkResult
@@ -466,7 +456,7 @@ textarea {
 		<tr>
 			<td><%=s.getId()%></td>
 			<%
-				if (VarKey.CASE_TABLE_HAS_KEY.equals(strS)) {
+				if (VarKey.CASE_TABLE_HAS_KEY.equals(strS) || VarKey.CASE_STRUCTURE_TABLE_NAME.equals(strS)) {
 			%>
 			<td bgcolor="<%=colorStr[4]%>"><%=s.getTableName()%></td>
 			<%
@@ -477,10 +467,49 @@ textarea {
 				}
 			%>
 			<td><%=s.getTableDesc()%></td>
+			<%
+				if(VarKey.CASE_STRUCTURE_KEY.equals(strS)){
+					%>
+					<td bgcolor="<%=colorStr[4]%>"><%=s.getTableKey()%></td>
+					<%
+				}else{
+					%>
+					<td><%=s.getTableKey()%></td>
+					<%
+				}
+
+				if(VarKey.CASE_TYPE_FLAG.equals(strS)){
+					%>
+					<td bgcolor="<%=colorStr[4]%>"><%=s.getTablelx()%></td>
+					<%
+				}else{
+					%>
+					<td><%=s.getTablelx()%></td>
+					<%
+				}
+			%>
 			<td><%=s.getTableType()%></td>
-			<td><%=s.getTableItem()%></td>
-			<td><%=s.getUrl()%></td>
-			<td><%=s.getTableOrder()%></td>
+			<%
+				if(VarKey.CASE_TYPE_FLAG.equals(strS)){
+					%>
+					<td bgcolor="<%=colorStr[4]%>"><%=s.getTableItem()%></td>
+					<%
+				}else{
+					%>
+					<td><%=s.getTableItem()%></td>
+					<%	
+				}
+				if(VarKey.CASE_TYPE_FLAG.equals(strS)){
+					%>
+					<td bgcolor="<%=colorStr[4]%>"><%=s.getTypeExp()%></td>
+					<%
+						}else{
+					%>
+					<td><%=s.getTypeExp()%></td>
+					<%
+				}
+			%>
+			
 		</tr>
 		<%
 			}
@@ -489,11 +518,12 @@ textarea {
 			} else {
 		%>
 		<tr>
-			<td colspan="7" align="center"><b>经核查，无错误</b></td>
+			<td colspan="8" align="center"><b>经核查，无错误</b></td>
 		</tr>
 		<%
 			}
 		%>
 	</table>
+	<div class="foot"></div>
 </body>
 </html>

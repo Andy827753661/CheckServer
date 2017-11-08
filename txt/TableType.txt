@@ -1,0 +1,1 @@
+=IF(E5="flag",2,IF(E5=CONCATENATE(A5,"_num"),3,1))

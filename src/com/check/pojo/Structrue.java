@@ -1,55 +1,65 @@
 package com.check.pojo;
 
+/**
+ * @author ’≈ ≤®
+ *
+ */
 public class Structrue {
 
 	private Integer Id;
 	private String tableName;
 	private String tableDesc;
+	private String tableKey;
+	private String tablelx;
 	private String tableType;
 	private String tableItem;
-	private String url;
-	private Integer tableOrder;
-	
+	private String typeExp;
 	public Integer getId() {
 		return Id;
-	}
-	public void setId(Integer id) {
-		Id = id;
 	}
 	public String getTableName() {
 		return tableName;
 	}
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
-	}
 	public String getTableDesc() {
 		return tableDesc;
 	}
-	public void setTableDesc(String tableDesc) {
-		this.tableDesc = tableDesc;
+	public String getTableKey() {
+		return tableKey;
+	}
+	public String getTablelx() {
+		return tablelx;
 	}
 	public String getTableType() {
 		return tableType;
 	}
-	public void setTableType(String tableType) {
-		this.tableType = tableType;
-	}
 	public String getTableItem() {
 		return tableItem;
+	}
+	public String getTypeExp() {
+		return typeExp;
+	}
+	public void setId(Integer id) {
+		Id = id;
+	}
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
+	public void setTableDesc(String tableDesc) {
+		this.tableDesc = tableDesc;
+	}
+	public void setTableKey(String tableKey) {
+		this.tableKey = tableKey;
+	}
+	public void setTablelx(String tablelx) {
+		this.tablelx = tablelx;
+	}
+	public void setTableType(String tableType) {
+		this.tableType = tableType;
 	}
 	public void setTableItem(String tableItem) {
 		this.tableItem = tableItem;
 	}
-	public Integer getTableOrder() {
-		return tableOrder;
-	}
-	public void setTableOrder(Integer tableOrder) {
-		this.tableOrder = tableOrder;
-	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
+	public void setTypeExp(String typeExp) {
+		this.typeExp = typeExp;
 	}
 }

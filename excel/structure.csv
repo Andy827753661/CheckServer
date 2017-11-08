@@ -1,4 +1,4 @@
-Id,tableName,tableDesc,tableType,tableItem,url,tableOrder
-1,operation,围手术期信息,1,,RedirectAction/toEJW.ejw?url=crf/IEAction/init.ejw,1
-2,followup,访视信息,2,flag,RedirectAction/toEJW.ejw?url=crf/PreAction/init.ejw,2
-3,remark,备注,3,remark_num,RedirectAction/toEJW.ejw?url=crf/SinsertAction/init.ejw,3
+Id,tableName,tableDesc,tablelx,tableKey,tableType,tableItem,typeExp
+1,baseinfo,基本资料,单表,baseinfo_id,1,,
+2,lab,实验室检查,多表,lab_id,2,flag,访视编号
+3,knyao,术前抗血小板或其他抗凝药,多表,knyao_id,3,knyao_num,系统自动生成
