@@ -9,17 +9,17 @@ public class WebConfig {
 	
 	//核查课题名称
 	public static String PROJECTNAME = "E201718_先健科技_可吸收药物洗脱冠脉支架";
+
 	
 	//是否是PDC课题
 	public static boolean ISPDC = false;
+
+/*======================================================================*/	
+	//核查人签名
+	public static String CHECKER = "张波";
 	
 	//连接数据库名称
 	public static String DBNAME = "check";
-	
-	//核查人签名
-	public static String CHECKER = "张波";
-
-/*======================================================================*/	
 	
 	public static String TITLE = "变量字典核查报告";
 	

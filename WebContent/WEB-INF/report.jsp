@@ -433,7 +433,11 @@ textarea {
 			<td width="15%">表名描述</td>
 			<td width="15%">表关键字</td>
 			<td width="10%">表类型</td>
+<<<<<<< f08b7fcdbffbfa708da71ee99de7dfc27a5e3a2c
 			<td width="10%">类型数</td>
+=======
+			<td width="10%">类型数字</td>
+>>>>>>> 添加表结构程序核查表关键字和类型标识，修改structure表结构
 			<td width="10%">类型标识</td>
 			<td width="15%">标识说明</td>
 		</tr>
