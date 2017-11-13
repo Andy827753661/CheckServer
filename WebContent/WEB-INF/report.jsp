@@ -9,7 +9,7 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<% 
+<%
 	SimpleDateFormat titleSDF = new SimpleDateFormat("_yyyy_MM_dd");
 	String titleDate = titleSDF.format(new Date());
 %>
@@ -18,7 +18,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><%=WebConfig.PROJECTNAME+WebConfig.TITLE+titleDate%></title>
+<title><%=WebConfig.PROJECTNAME + WebConfig.TITLE + titleDate%></title>
 <style type="text/css">
 table {
 	margin-left: 2%;
@@ -31,6 +31,7 @@ td {
 	height: 25px;
 	padding: 5px;
 }
+
 .td-height {
 	height: 35px;
 	padding: 5px;
@@ -51,7 +52,7 @@ td {
 	font-weight: bold;
 }
 
-.foot{
+.foot {
 	margin-top: 50px;
 }
 
@@ -83,19 +84,17 @@ textarea {
 </style>
 </head>
 <body>
-	<%! String fontSize = WebConfig.getFontSize();  %>
-	<div class="head" align="center" style="font-size: <%=fontSize%>;"><%=WebConfig.PROJECTNAME+WebConfig.TITLE%></div>
+	<%!String fontSize = WebConfig.getFontSize();%>
+	<div class="head" align="center" style="font-size: <%=fontSize%>;"><%=WebConfig.PROJECTNAME + WebConfig.TITLE%></div>
 	<br>
 	<table class="neck">
 		<tr>
-			<td align="center" width="50%"><b>核查时间：
-			<%
+			<td align="center" width="50%"><b>核查时间： <%
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				String date = sdf.format(new Date());
-			%>
-			<%= date %>
+			%> <%=date%>
 			</b></td>
-			<td align="center" width="50%"><b>核查人：<%= WebConfig.CHECKER %></b></td>
+			<td align="center" width="50%"><b>核查人：<%=WebConfig.CHECKER%></b></td>
 		</tr>
 	</table>
 	<hr>
@@ -103,7 +102,7 @@ textarea {
 	<table border="1">
 		<tr>
 			<td width="70%" align="center" class="td-height">核查项目</td>
-			<td width="30%" align="center" >是否通过</td>
+			<td width="30%" align="center">是否通过</td>
 		</tr>
 		<tr>
 			<td class="td-height">1.核查表结构的表名是否为规范名称。</td>
@@ -213,13 +212,13 @@ textarea {
 						.getAttribute("data");
 				for (String strD : dTagList) {
 					String tempBl = "";
-					
+
 					String bl = "";
 					String pageIndex = "";
 					String view = "";
 					String flag = "";
 					String range = "";
-					
+
 					int blColorIndex = 0;
 					int lenColorIndex = 0;
 					if (checkResult.containsKey(strD)) {
@@ -231,22 +230,23 @@ textarea {
 			List<Dict> dicts = (List) checkResult.get(strD);
 						for (Dict dict : dicts) {
 							int index = -1;
-							
+
 							bl = dict.getBianliang();
 							pageIndex = dict.getPage();
 							view = dict.getView();
 							flag = dict.getFlag();
-							range = dict.getRange(); 
-							if(pageIndex == null || pageIndex.equalsIgnoreCase("NULL")){
+							range = dict.getRange();
+							if (pageIndex == null
+									|| pageIndex.equalsIgnoreCase("NULL")) {
 								pageIndex = "";
 							}
-							if(view == null || view.equalsIgnoreCase("NULL")){
+							if (view == null || view.equalsIgnoreCase("NULL")) {
 								view = "";
 							}
-							if(flag == null || flag.equalsIgnoreCase("NULL")){
+							if (flag == null || flag.equalsIgnoreCase("NULL")) {
 								flag = "";
 							}
-							if(range == null || range.equalsIgnoreCase("NULL")){
+							if (range == null || range.equalsIgnoreCase("NULL")) {
 								range = "";
 							}
 							int dictId = dict.getDictId();
@@ -460,7 +460,9 @@ textarea {
 		<tr>
 			<td><%=s.getId()%></td>
 			<%
-				if (VarKey.CASE_TABLE_HAS_KEY.equals(strS) || VarKey.CASE_STRUCTURE_TABLE_NAME.equals(strS)) {
+				if (VarKey.CASE_TABLE_HAS_KEY.equals(strS)
+										|| VarKey.CASE_STRUCTURE_TABLE_NAME
+												.equals(strS)) {
 			%>
 			<td bgcolor="<%=colorStr[4]%>"><%=s.getTableName()%></td>
 			<%
@@ -472,48 +474,53 @@ textarea {
 			%>
 			<td><%=s.getTableDesc()%></td>
 			<%
-				if(VarKey.CASE_STRUCTURE_KEY.equals(strS)){
-					%>
-					<td bgcolor="<%=colorStr[4]%>"><%=s.getTableKey()%></td>
-					<%
-				}else{
-					%>
-					<td><%=s.getTableKey()%></td>
-					<%
+				if (VarKey.CASE_STRUCTURE_KEY.equals(strS)) {
+			%>
+			<td bgcolor="<%=colorStr[4]%>"><%=s.getTableKey()%></td>
+			<%
+				} else {
+			%>
+			<td><%=s.getTableKey()%></td>
+			<%
 				}
 
-				if(VarKey.CASE_TYPE_FLAG.equals(strS)){
-					%>
-					<td bgcolor="<%=colorStr[4]%>"><%=s.getTablelx()%></td>
-					<%
-				}else{
-					%>
-					<td><%=s.getTablelx()%></td>
-					<%
+								if (VarKey.CASE_TYPE_FLAG.equals(strS)) {
+			%>
+			<td bgcolor="<%=colorStr[4]%>"><%=s.getTablelx()%></td>
+			<%
+				} else {
+			%>
+			<td><%=s.getTablelx()%></td>
+			<%
 				}
 			%>
 			<td><%=s.getTableType()%></td>
 			<%
-				if(VarKey.CASE_TYPE_FLAG.equals(strS)){
-					%>
-					<td bgcolor="<%=colorStr[4]%>"><%=s.getTableItem()%></td>
-					<%
-				}else{
-					%>
-					<td><%=s.getTableItem()%></td>
-					<%	
+				if (VarKey.CASE_TYPE_FLAG.equals(strS)) {
+			%>
+			<td bgcolor="<%=colorStr[4]%>"><%=s.getTableItem()%></td>
+			<%
+				} else {
+			%>
+			<td><%=s.getTableItem()%></td>
+			<%
 				}
-				if(VarKey.CASE_TYPE_FLAG.equals(strS)){
-					%>
-					<td bgcolor="<%=colorStr[4]%>"><%=s.getTypeExp()%></td>
-					<%
-						}else{
-					%>
-					<td><%=s.getTypeExp()%></td>
-					<%
+								String typeExp = s.getTypeExp();
+								if (typeExp == null
+										|| typeExp.equalsIgnoreCase("NULL")) {
+									typeExp = "";
+								}
+								if (VarKey.CASE_TYPE_FLAG.equals(strS)) {
+			%>
+			<td bgcolor="<%=colorStr[4]%>"><%=typeExp%></td>
+			<%
+				} else {
+			%>
+			<td><%=typeExp%></td>
+			<%
 				}
 			%>
-			
+
 		</tr>
 		<%
 			}
