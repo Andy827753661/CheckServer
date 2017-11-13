@@ -13,7 +13,6 @@ public class Structrue {
 	private String tablelx;
 	private String tableType;
 	private String tableItem;
-	private String typeExp;
 	public Integer getId() {
 		return Id;
 	}
@@ -35,9 +34,6 @@ public class Structrue {
 	public String getTableItem() {
 		return tableItem;
 	}
-	public String getTypeExp() {
-		return typeExp;
-	}
 	public void setId(Integer id) {
 		Id = id;
 	}
@@ -58,8 +54,5 @@ public class Structrue {
 	}
 	public void setTableItem(String tableItem) {
 		this.tableItem = tableItem;
-	}
-	public void setTypeExp(String typeExp) {
-		this.typeExp = typeExp;
 	}
 }

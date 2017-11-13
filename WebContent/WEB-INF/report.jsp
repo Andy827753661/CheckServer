@@ -429,28 +429,22 @@ textarea {
 	<table border="1">
 		<tr>
 			<td width="10%">Id</td>
-			<td width="15%">表名</td>
-			<td width="15%">表名描述</td>
-			<td width="15%">表关键字</td>
+			<td width="20%">表名</td>
+			<td width="20%">表名描述</td>
+			<td width="20%">表关键字</td>
 			<td width="10%">表类型</td>
-<<<<<<< f08b7fcdbffbfa708da71ee99de7dfc27a5e3a2c
-			<td width="10%">类型数</td>
-=======
 			<td width="10%">类型数字</td>
->>>>>>> 添加表结构程序核查表关键字和类型标识，修改structure表结构
 			<td width="10%">类型标识</td>
-			<td width="15%">标识说明</td>
 		</tr>
 		<%
-			List<String> sTagList = (List) request.getAttribute("sTag");
+			List<String> sTagList = (List)request.getAttribute("sTag");
 			if (sTagList != null && sTagList.size() > 0) {
 				for (String strS : sTagList) {
-					Map<String, Object> checkResult = (Map) request
-							.getAttribute("data");
+					Map<String, Object> checkResult = (Map) request.getAttribute("data");
 					if (checkResult.containsKey(strS)) {
 		%>
 		<tr>
-			<td colspan="8" bgcolor="<%=colorStr[5]%>"><%=checkResult.get(strS + "_msg")%></td>
+			<td colspan="7" bgcolor="<%=colorStr[5]%>"><%=checkResult.get(strS + "_msg")%></td>
 		</tr>
 		<%
 			List<Structrue> structrues = (List) checkResult
@@ -505,22 +499,7 @@ textarea {
 			<td><%=s.getTableItem()%></td>
 			<%
 				}
-								String typeExp = s.getTypeExp();
-								if (typeExp == null
-										|| typeExp.equalsIgnoreCase("NULL")) {
-									typeExp = "";
-								}
-								if (VarKey.CASE_TYPE_FLAG.equals(strS)) {
 			%>
-			<td bgcolor="<%=colorStr[4]%>"><%=typeExp%></td>
-			<%
-				} else {
-			%>
-			<td><%=typeExp%></td>
-			<%
-				}
-			%>
-
 		</tr>
 		<%
 			}
@@ -529,7 +508,7 @@ textarea {
 			} else {
 		%>
 		<tr>
-			<td colspan="8" align="center"><b>经核查，无错误</b></td>
+			<td colspan="7" align="center"><b>经核查，无错误</b></td>
 		</tr>
 		<%
 			}

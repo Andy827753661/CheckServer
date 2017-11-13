@@ -17,7 +17,7 @@ public class WebConfig {
 	//核查人签名
 	public static String CHECKER = "张波";
 	
-	//连接数据库名称
+	//连接数据库名称 
 	public static String DBNAME = "check";
 	
 	public static String TITLE = "变量字典核查报告";

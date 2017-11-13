@@ -145,7 +145,7 @@ public class ReportAction extends RequestHandler {
 		print("表名含有关键字", VarKey.CASE_TABLE_HAS_KEY, new Structrue(), "SELECT * FROM structure WHERE tableName IN (SELECT word FROM keyword) ORDER BY Id");
 
 		
-		print("表结构表中的“表类型”与“标识”不一致", VarKey.CASE_TYPE_FLAG, new Structrue(), "SELECT * FROM structure WHERE (tablelx = \"单表\"   AND ((tableItem IS NOT NULL AND tableItem != \"\") OR (typeExp IS NOT NULL AND typeExp != \"\"))) OR (tablelx = \"多表\"   AND ((tableItem IS NULL OR tableItem =\"\") OR (typeExp IS NULL OR typeExp = \"\")));");
+		print("表结构表中的“表类型”与“标识”不一致", VarKey.CASE_TYPE_FLAG, new Structrue(), "SELECT * FROM structure WHERE (tableType = 1 AND (tablelx != \"单表\" OR (tableItem IS NOT NULL AND tableItem !=\"\"))) OR (tableType = 2 AND(tablelx !=\"多表\"   OR tableItem != \"flag\")) OR (tableType = 3 AND(tablelx !=\"多表\" OR tableItem NOT LIKE CONCAT(tableName,\"_num\")));");
 
 		
 		print("表结构表中的“关键字”不符合“表名_id”的形式", VarKey.CASE_STRUCTURE_KEY, new Structrue(), "SELECT * FROM structure WHERE tableKey NOT LIKE CONCAT(tableName,\"_id\");");
