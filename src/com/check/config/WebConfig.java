@@ -8,7 +8,7 @@ import java.util.Map;
 public class WebConfig {
 	
 	//核查课题名称
-	public static String PROJECTNAME = "E201718_先健科技_可吸收药物洗脱冠脉支架";
+	public static String PROJECTNAME = "E201723_心凯诺医疗_取栓装置";
 	
 	//是否是PDC课题
 	public static boolean ISPDC = false;

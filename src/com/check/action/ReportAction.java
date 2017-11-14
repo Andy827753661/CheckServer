@@ -145,10 +145,13 @@ public class ReportAction extends RequestHandler {
 		print("表名含有关键字", VarKey.CASE_TABLE_HAS_KEY, new Structrue(), "SELECT * FROM structure WHERE tableName IN (SELECT word FROM keyword) ORDER BY Id");
 
 		
-		print("表结构表中的“表类型”与“标识”不一致", VarKey.CASE_TYPE_FLAG, new Structrue(), "SELECT * FROM structure WHERE (tableType = 1 AND (tablelx != \"单表\" OR (tableItem IS NOT NULL AND tableItem !=\"\"))) OR (tableType = 2 AND(tablelx !=\"多表\"   OR tableItem != \"flag\")) OR (tableType = 3 AND(tablelx !=\"多表\" OR tableItem NOT LIKE CONCAT(tableName,\"_num\")));");
+		print("表结构表中的“表类型”与“标识”不一致", VarKey.CASE_TYPE_FLAG, new Structrue(), "SELECT * FROM structure WHERE (tableType = 1 AND (tablelx != \"单表\" OR (tableItem IS NOT NULL AND tableItem !=\"\"))) OR (tableType = 2 AND(tablelx !=\"多表\"   OR tableItem != \"flag\")) OR (tableType = 3 AND(tablelx !=\"多表\" OR tableItem NOT LIKE \"%_num\"));");
 
 		
 		print("表结构表中的“关键字”不符合“表名_id”的形式", VarKey.CASE_STRUCTURE_KEY, new Structrue(), "SELECT * FROM structure WHERE tableKey NOT LIKE CONCAT(tableName,\"_id\");");
+		
+		
+		print("表结构表中的“标识变量”不符合规范（flag、表名_num）", VarKey.CASE_STRUCTURE_ITEM, new Structrue(), "SELECT * FROM structure WHERE (tableType = 3 AND tableItem NOT LIKE CONCAT(tableName,\"_num\")) OR (tableType = 2 AND tableItem != \"flag\");");
 		
 		
 		print("表结构表的表名不是字母和数字的组合", VarKey.CASE_STRUCTURE_TABLE_NAME, new Structrue(), "SELECT * FROM structure WHERE tableName NOT REGEXP \"^[a-zA-Z0-9]*$\";");

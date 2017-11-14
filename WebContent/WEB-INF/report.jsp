@@ -490,7 +490,7 @@ textarea {
 			%>
 			<td><%=s.getTableType()%></td>
 			<%
-				if (VarKey.CASE_TYPE_FLAG.equals(strS)) {
+				if (VarKey.CASE_TYPE_FLAG.equals(strS)||VarKey.CASE_STRUCTURE_ITEM.equals(strS)) {
 			%>
 			<td bgcolor="<%=colorStr[4]%>"><%=s.getTableItem()%></td>
 			<%

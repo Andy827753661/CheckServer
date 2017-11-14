@@ -1,5 +1,1 @@
-<<<<<<< f08b7fcdbffbfa708da71ee99de7dfc27a5e3a2c
-=IF(E5="flag",2,IF(E5=CONCATENATE(A5,"_num"),3,1))
-=======
 =IF(G2="flag",2,IF(G2=CONCATENATE(B2,"_num"),3,1))
->>>>>>> 添加表结构程序核查表关键字和类型标识，修改structure表结构
