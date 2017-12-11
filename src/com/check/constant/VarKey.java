@@ -41,4 +41,9 @@ public class VarKey {
 	public static final String CASE_STRUCTURE_KEY = "structure_key";
 	
 	public static final String CASE_STRUCTURE_TABLE_NAME = "structure_table_name";
+	
+	public static final String CASE_DICT_MORE_STRUCTURE = "dict_more_structure";
+	
+	public static final String CASE_STRUCTURE_MORE_DICT = "structure_more_dict";
+
 }

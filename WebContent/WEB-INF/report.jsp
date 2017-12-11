@@ -321,7 +321,9 @@ textarea {
 			<%
 				}
 								tempBl = bl;
-								if (index == 4) {
+								if (index == 4
+										|| VarKey.CASE_DICT_MORE_STRUCTURE
+												.equals(strD)) {
 			%>
 			<td bgcolor="<%=colorStr[4]%>"><%=dict.getCrf()%></td>
 			<%
@@ -437,10 +439,11 @@ textarea {
 			<td width="10%">类型标识</td>
 		</tr>
 		<%
-			List<String> sTagList = (List)request.getAttribute("sTag");
+			List<String> sTagList = (List) request.getAttribute("sTag");
 			if (sTagList != null && sTagList.size() > 0) {
 				for (String strS : sTagList) {
-					Map<String, Object> checkResult = (Map) request.getAttribute("data");
+					Map<String, Object> checkResult = (Map) request
+							.getAttribute("data");
 					if (checkResult.containsKey(strS)) {
 		%>
 		<tr>
@@ -456,6 +459,8 @@ textarea {
 			<%
 				if (VarKey.CASE_TABLE_HAS_KEY.equals(strS)
 										|| VarKey.CASE_STRUCTURE_TABLE_NAME
+												.equals(strS)
+										|| VarKey.CASE_STRUCTURE_MORE_DICT
 												.equals(strS)) {
 			%>
 			<td bgcolor="<%=colorStr[4]%>"><%=s.getTableName()%></td>
@@ -490,7 +495,8 @@ textarea {
 			%>
 			<td><%=s.getTableType()%></td>
 			<%
-				if (VarKey.CASE_TYPE_FLAG.equals(strS)||VarKey.CASE_STRUCTURE_ITEM.equals(strS)) {
+				if (VarKey.CASE_TYPE_FLAG.equals(strS)
+										|| VarKey.CASE_STRUCTURE_ITEM.equals(strS)) {
 			%>
 			<td bgcolor="<%=colorStr[4]%>"><%=s.getTableItem()%></td>
 			<%
