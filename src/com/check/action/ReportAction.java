@@ -53,7 +53,8 @@ public class ReportAction extends RequestHandler {
  		print("表结构表中非flag标识与变量字典中不一致", VarKey.CASE_EQUAL_NOT_FLAG, new Dict(), "SELECT * FROM dict WHERE crf IN (SELECT tableName FROM structure WHERE tableType != 2) AND flag IS NOT NULL AND flag !='' ORDER BY dictId;");
 
 		
-		print("变量名与表名一致", VarKey.CASE_TABLE_VAR_NAME, new Dict(), "SELECT * FROM dict WHERE bianliang IN (SELECT tableName FROM structure) ORDER BY dictId;");
+//		print("变量名与表名一致", VarKey.CASE_TABLE_VAR_NAME, new Dict(), "SELECT * FROM dict WHERE bianliang IN (SELECT tableName FROM structure) ORDER BY dictId;");
+		print("变量名与表名一致", VarKey.CASE_TABLE_VAR_NAME, new Dict(), "SELECT * FROM dict WHERE bianliang=crf ORDER BY dictId;");
 		
 		
 		if(WebConfig.ISPDC){

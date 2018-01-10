@@ -212,13 +212,7 @@ textarea {
 						.getAttribute("data");
 				for (String strD : dTagList) {
 					String tempBl = "";
-
-					String bl = "";
-					String pageIndex = "";
-					String view = "";
-					String flag = "";
-					String range = "";
-
+					
 					int blColorIndex = 0;
 					int lenColorIndex = 0;
 					if (checkResult.containsKey(strD)) {
@@ -231,24 +225,8 @@ textarea {
 						for (Dict dict : dicts) {
 							int index = -1;
 
-							bl = dict.getBianliang();
-							pageIndex = dict.getPage();
-							view = dict.getView();
-							flag = dict.getFlag();
-							range = dict.getRange();
-							if (pageIndex == null
-									|| pageIndex.equalsIgnoreCase("NULL")) {
-								pageIndex = "";
-							}
-							if (view == null || view.equalsIgnoreCase("NULL")) {
-								view = "";
-							}
-							if (flag == null || flag.equalsIgnoreCase("NULL")) {
-								flag = "";
-							}
-							if (range == null || range.equalsIgnoreCase("NULL")) {
-								range = "";
-							}
+							String bl = dict.getBianliang();
+														
 							int dictId = dict.getDictId();
 							if (VarKey.CASE_DICT_HAS_BD.equals(strD)
 									&& bdIdMap.containsKey(dictId)) {
@@ -371,20 +349,20 @@ textarea {
 				}
 								if (index == 9) {
 			%>
-			<td bgcolor="<%=colorStr[4]%>"><%=pageIndex%></td>
+			<td bgcolor="<%=colorStr[4]%>"><%=dict.getPage()==null?"":dict.getPage()%></td>
 			<%
 				} else {
 			%>
-			<td><%=pageIndex%></td>
+			<td><%=dict.getPage()==null?"":dict.getPage()%></td>
 			<%
 				}
 								if (index == 10) {
 			%>
-			<td bgcolor="<%=colorStr[4]%>"><%=view%></td>
+			<td bgcolor="<%=colorStr[4]%>"><%=dict.getView()==null?"":dict.getView()%></td>
 			<%
 				} else {
 			%>
-			<td><%=view%></td>
+			<td><%=dict.getView()==null?"":dict.getView()%></td>
 			<%
 				}
 								if (VarKey.CASE_EQUAL_IS_FLAG.equals(strD)
@@ -393,20 +371,20 @@ textarea {
 										|| VarKey.CASE_FLAG_V1_V2.equals(strD)
 										|| index == 11) {
 			%>
-			<td bgcolor="<%=colorStr[4]%>"><%=flag%></td>
+			<td bgcolor="<%=colorStr[4]%>"><%=dict.getFlag()==null?"":dict.getFlag()%></td>
 			<%
 				} else {
 			%>
-			<td><%=flag%></td>
+			<td><%=dict.getFlag()==null?"":dict.getFlag()%></td>
 			<%
 				}
 								if (index == 12) {
 			%>
-			<td bgcolor="<%=colorStr[4]%>"><%=range%></td>
+			<td bgcolor="<%=colorStr[4]%>"><%=dict.getRange()==null?"": dict.getRange()%></td>
 			<%
 				} else {
 			%>
-			<td><%=range%></td>
+			<td><%=dict.getRange()==null?"": dict.getRange()%></td>
 			<%
 				}
 			%>
@@ -498,11 +476,11 @@ textarea {
 				if (VarKey.CASE_TYPE_FLAG.equals(strS)
 										|| VarKey.CASE_STRUCTURE_ITEM.equals(strS)) {
 			%>
-			<td bgcolor="<%=colorStr[4]%>"><%=s.getTableItem()%></td>
+			<td bgcolor="<%=colorStr[4]%>"><%=s.getTableItem()==null?"":s.getTableItem()%></td>
 			<%
 				} else {
 			%>
-			<td><%=s.getTableItem()%></td>
+			<td><%=s.getTableItem()==null?"":s.getTableItem()%></td>
 			<%
 				}
 			%>
