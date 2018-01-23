@@ -139,7 +139,10 @@ public class ReportAction extends RequestHandler {
 			print("变量字典中有英文的逗号和英文的双引号", VarKey.CASE_DICT_HAS_BD, new Dict(), "SELECT * FROM dict WHERE dictId IN ("+bdIds+");");		
 		}
 		
+		
+		if(WebConfig.checkFlag){
 		print("变量字典中访视标记不能形同V1，V2...", VarKey.CASE_FLAG_V1_V2,new Dict(), "select * from dict where dictId in (select min(dictId) from dict where flag not like 'v%' AND flag != '' AND flag IS NOT NULL group by flag);");
+		}
 
 		
 		print("变量字典比表结构表多余的表",VarKey.CASE_DICT_MORE_STRUCTURE,new Dict(),"SELECT * FROM dict WHERE crf NOT IN(SELECT tableName FROM structure)GROUP BY crf ORDER BY dictId;");

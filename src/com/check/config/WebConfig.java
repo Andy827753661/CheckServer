@@ -8,15 +8,18 @@ import java.util.Map;
 public class WebConfig {
 	
 	//核查课题名称
-	public static String PROJECTNAME = "E201736_湖南瑞康通_SeparGate球囊导引导管";
+	public static String PROJECTNAME = "E201709_天坛医院_复合手术治疗复杂性动静脉畸形";
 	
 	//是否是PDC课题
 	public static boolean ISPDC = false;
+	
+	//是否检查：变量字典中访视标记不能形同V1，V2...
+	public static boolean checkFlag = true;
 
 /*======================================================================*/	
 	//核查人签名
 	public static String CHECKER = "张波";
-	
+
 	//连接数据库名称 
 	public static String DBNAME = "check";
 	
