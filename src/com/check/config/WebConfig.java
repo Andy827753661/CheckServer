@@ -8,7 +8,7 @@ import java.util.Map;
 public class WebConfig {
 	
 	//核查课题名称
-	public static String PROJECTNAME = "E201709_天坛医院_复合手术治疗复杂性动静脉畸形";
+	public static String PROJECTNAME = "E201702_微创心通_主动脉瓣膜";
 	
 	//是否是PDC课题
 	public static boolean ISPDC = false;
@@ -23,7 +23,7 @@ public class WebConfig {
 	//连接数据库名称 
 	public static String DBNAME = "check";
 	
-	public static String TITLE = "变量字典核查报告";
+	public static String TITLE = "_变量字典核查报告";
 	
 	public static String YYYYMMDD="yyyy-MM-dd";
 	
@@ -47,7 +47,7 @@ public class WebConfig {
 	
 	public static String getFontSize(){
 		String fontSize = "";
-		if(PROJECTNAME.length() <= 30 && PROJECTNAME.length() > 0){
+		if(PROJECTNAME.length() <= 26 && PROJECTNAME.length() > 0){
 			fontSize = "xx-large";
 		}else{
 			fontSize = "x-large";

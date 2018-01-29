@@ -132,7 +132,7 @@ textarea {
 			</select></td>
 		</tr>
 		<tr>
-			<td class="td-height">4.随访中随访状态变量名为isfw。</td>
+			<td class="td-height">4.EDC课题中随访的随访状态变量名为isfw。</td>
 			<td align="center"><select>
 					<option value="null"></option>
 					<option>通过</option>
@@ -141,7 +141,7 @@ textarea {
 			</select></td>
 		</tr>
 		<tr>
-			<td class="td-height">5.备注页备注内容变量名为content。</td>
+			<td class="td-height">5.EDC课题中备注页备注内容变量名为content。</td>
 			<td align="center"><select>
 					<option value="null"></option>
 					<option>通过</option>
