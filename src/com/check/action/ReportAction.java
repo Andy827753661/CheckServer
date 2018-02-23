@@ -32,6 +32,8 @@ public class ReportAction extends RequestHandler {
 	private List<String> ruleErrorList = new ArrayList<>();
 
 	private Map<String, Object> checkResult = new HashMap();
+	
+	private Map<String, Integer> questionCount = new HashMap();
 
 	private List<String> dTagList = new ArrayList<>();
 	
@@ -170,6 +172,7 @@ public class ReportAction extends RequestHandler {
 		serverInterface.setAttribute("dTag", dTagList);
 		serverInterface.setAttribute("sTag", sTagList);
 		serverInterface.setAttribute("bdTag", bdIdMap);
+		serverInterface.setAttribute("count", questionCount);
 		
 		return "/WEB-INF/report.jsp";
 	}
@@ -182,10 +185,12 @@ public class ReportAction extends RequestHandler {
 			checkResult.put(tag, results);
 			if(t instanceof Dict){				
 				checkResult.put(tag+"_msg", dECount + "." + errorMsg);
+				questionCount.put(tag+"_msg", results.size());
 				dECount++;
 				dTagList .add(tag);
 			}else if(t instanceof Structrue){
 				checkResult.put(tag+"_msg", sECount + "." + errorMsg);
+				questionCount.put(tag+"_msg", results.size());
 				sECount++;
 				sTagList.add(tag);
 			}
@@ -207,10 +212,12 @@ public class ReportAction extends RequestHandler {
 			checkResult.put(tag, results);
 			if(t instanceof Dict){				
 				checkResult.put(tag+"_msg", dECount + "." + errorMsg);
+				questionCount.put(tag+"_msg", results.size());
 				dECount++;
 				dTagList .add(tag);
 			}else if(t instanceof Structrue){
 				checkResult.put(tag+"_msg", sECount + "." + errorMsg);
+				questionCount.put(tag+"_msg", results.size());
 				sECount++;
 				sTagList.add(tag);
 			}

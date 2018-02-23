@@ -8,12 +8,12 @@ import java.util.Map;
 public class WebConfig {
 	
 	//核查课题名称
-	public static String PROJECTNAME = "E201702_微创心通_主动脉瓣膜";
+	public static String PROJECTNAME = "E201801_深圳北芯生命科技_血流储备分数（FFR）测量系统";
 	
-	//是否是PDC课题
+	//是否是PDC课题:true为PDC，false为EDC
 	public static boolean ISPDC = false;
 	
-	//是否检查：变量字典中访视标记不能形同V1，V2...
+	//是否检查：变量字典中访视标记不能形同V1，V2...true为检查flag标记，false为不检查
 	public static boolean checkFlag = true;
 
 /*======================================================================*/	

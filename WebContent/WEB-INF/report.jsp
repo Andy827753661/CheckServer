@@ -205,6 +205,7 @@ textarea {
 		<%
 			String[] colorStr = { "#33CCFF", "#FFFF77", "#E8CCFF", "#DDDDDD",
 					"#FFFF77", "#FFCCCC" };
+			Map<String,Integer> questionCount = (Map)request.getAttribute("count");
 			Map<Integer, Integer> bdIdMap = (Map) request.getAttribute("bdTag");
 			List<String> dTagList = (List) request.getAttribute("dTag");
 			if (dTagList != null && dTagList.size() > 0) {
@@ -218,7 +219,7 @@ textarea {
 					if (checkResult.containsKey(strD)) {
 		%>
 		<tr>
-			<td colspan="12" bgcolor="<%=colorStr[5]%>"><%=checkResult.get(strD + "_msg")%></td>
+			<td colspan="12" bgcolor="<%=colorStr[5]%>"><%=checkResult.get(strD + "_msg")%>(<%=questionCount.get(strD + "_msg") %>个问题)</td>
 		</tr>
 		<%
 			List<Dict> dicts = (List) checkResult.get(strD);
@@ -425,7 +426,7 @@ textarea {
 					if (checkResult.containsKey(strS)) {
 		%>
 		<tr>
-			<td colspan="7" bgcolor="<%=colorStr[5]%>"><%=checkResult.get(strS + "_msg")%></td>
+			<td colspan="7" bgcolor="<%=colorStr[5]%>"><%=checkResult.get(strS + "_msg")%>(<%=questionCount.get(strS + "_msg") %>个问题)</td>
 		</tr>
 		<%
 			List<Structrue> structrues = (List) checkResult
