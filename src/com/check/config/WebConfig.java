@@ -8,7 +8,7 @@ import java.util.Map;
 public class WebConfig {
 	
 	//核查课题名称
-	public static String PROJECTNAME = "E201801_深圳北芯生命科技_血流储备分数（FFR）测量系统";
+	public static String PROJECTNAME = "连接远程";
 	
 	//是否是PDC课题:true为PDC，false为EDC
 	public static boolean ISPDC = false;
