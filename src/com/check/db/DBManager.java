@@ -3,7 +3,7 @@ package com.check.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-import com.check.config.WebConfig;
+import com.check.WebConfig;
 
 
 

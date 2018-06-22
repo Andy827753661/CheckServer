@@ -10,12 +10,12 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import com.check.config.WebConfig;
+import com.check.WebConfig;
 
 public class PageEncodingFilter implements Filter {
 
 	public void init(FilterConfig arg0) throws ServletException {
-		System.out.println(com.check.config.WebConfig.DBNAME + "×Ö·û¹ýÂËÆô¶¯£¡");
+		System.out.println(WebConfig.DBNAME + "×Ö·û¹ýÂËÆô¶¯£¡");
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response,
@@ -32,6 +32,6 @@ public class PageEncodingFilter implements Filter {
 	}
 
 	public void destroy() {
-		System.out.println(com.check.config.WebConfig.DBNAME + "×Ö·û¹ýÂËÍ£Ö¹£¡");
+		System.out.println(WebConfig.DBNAME + "×Ö·û¹ýÂËÍ£Ö¹£¡");
 	}
 }

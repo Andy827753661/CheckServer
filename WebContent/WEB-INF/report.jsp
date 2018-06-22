@@ -1,4 +1,4 @@
-<%@ page import="com.check.config.WebConfig"%>
+<%@ page import="com.check.WebConfig"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="java.util.Date"%>
 <%@ page import="com.check.pojo.Structrue"%>
