@@ -8,7 +8,9 @@
 
 # Host: 127.0.0.1    Database: check
 # ------------------------------------------------------
-# Server version 5.0.41-community-nt
+# Server version 5.5.56
+
+DROP DATABASE IF EXISTS `check`;
 
 CREATE DATABASE `check`;
 USE `check`;
@@ -18,14 +20,10 @@ USE `check`;
 #
 
 CREATE TABLE `allvar` (
-  `dictId` int(6) unsigned NOT NULL auto_increment,
-  `bianliang` char(20) default NULL,
-  PRIMARY KEY  (`dictId`)
-) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
-
-#
-# Dumping data for table allvar
-#
+  `dictId` int(6) unsigned NOT NULL AUTO_INCREMENT,
+  `bianliang` char(20) DEFAULT NULL,
+  PRIMARY KEY (`dictId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1399 DEFAULT CHARSET=gb2312;
 
 
 #
@@ -33,25 +31,21 @@ CREATE TABLE `allvar` (
 #
 
 CREATE TABLE `dict` (
-  `dictId` int(6) unsigned NOT NULL auto_increment,
-  `bianliang` char(20) default NULL,
-  `len` char(4) default NULL,
-  `crf` char(20) default NULL,
-  `crfname` char(50) default NULL,
-  `bname` char(100) default NULL,
-  `paixu` char(3) default NULL,
+  `dictId` int(6) unsigned NOT NULL AUTO_INCREMENT,
+  `bianliang` char(20) DEFAULT NULL,
+  `len` char(4) DEFAULT NULL,
+  `crf` char(20) DEFAULT NULL,
+  `crfname` char(50) DEFAULT NULL,
+  `bname` char(100) DEFAULT NULL,
+  `paixu` char(3) DEFAULT NULL,
   `bvalue` text,
-  `page` int(6) default NULL,
-  `view` char(20) default NULL,
-  `flag` char(5) default NULL,
-  `range` char(50) default NULL,
-  `ques` char(200) default NULL,
-  PRIMARY KEY  (`dictId`)
-) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
-
-#
-# Dumping data for table dict
-#
+  `page` int(6) DEFAULT NULL,
+  `view` char(20) DEFAULT NULL,
+  `flag` char(5) DEFAULT NULL,
+  `range` char(50) DEFAULT NULL,
+  `ques` char(200) DEFAULT NULL,
+  PRIMARY KEY (`dictId`)
+) ENGINE=InnoDB AUTO_INCREMENT=6287 DEFAULT CHARSET=gb2312;
 
 
 #
@@ -59,15 +53,11 @@ CREATE TABLE `dict` (
 #
 
 CREATE TABLE `flagvar` (
-  `dictId` int(6) unsigned NOT NULL auto_increment,
-  `bianliang` char(20) default NULL,
-  `originId` int(6) default NULL,
-  PRIMARY KEY  (`dictId`)
-) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
-
-#
-# Dumping data for table flagvar
-#
+  `dictId` int(6) unsigned NOT NULL AUTO_INCREMENT,
+  `bianliang` char(20) DEFAULT NULL,
+  `originId` int(6) DEFAULT NULL,
+  PRIMARY KEY (`dictId`)
+) ENGINE=InnoDB AUTO_INCREMENT=8192 DEFAULT CHARSET=gb2312;
 
 
 #
@@ -75,10 +65,10 @@ CREATE TABLE `flagvar` (
 #
 
 CREATE TABLE `keyword` (
-  `id` int(6) unsigned NOT NULL auto_increment,
-  `word` char(20) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
+  `id` int(6) unsigned NOT NULL AUTO_INCREMENT,
+  `word` char(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=314 DEFAULT CHARSET=gb2312;
 
 #
 # Dumping data for table keyword
@@ -403,19 +393,16 @@ INSERT INTO `keyword` VALUES (313,'zerofill');
 #
 
 CREATE TABLE `structure` (
-  `Id` int(6) unsigned NOT NULL auto_increment,
-  `tableName` char(20) default NULL,
-  `tableDesc` char(50) default NULL,
-  `tablelx` char(2) default NULL,
-  `tableKey` char(30) default NULL,
-  `tableType` char(1) default NULL,
-  `tableItem` char(20) default NULL,
-  PRIMARY KEY  (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
+  `Id` int(6) unsigned NOT NULL AUTO_INCREMENT,
+  `tableName` char(20) DEFAULT NULL,
+  `tableDesc` char(50) DEFAULT NULL,
+  `tablelx` char(2) DEFAULT NULL,
+  `tableKey` char(30) DEFAULT NULL,
+  `tableType` char(1) DEFAULT NULL,
+  `tableItem` char(20) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=gb2312;
 
-#
-# Dumping data for table structure
-#
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
