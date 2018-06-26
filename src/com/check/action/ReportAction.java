@@ -17,6 +17,7 @@ import com.check.db.DBManager;
 import com.check.pojo.Dict;
 import com.check.pojo.Structrue;
 import com.check.sql.CRUD;
+import com.google.common.collect.Lists;
 
 import ejw.RequestHandler;
 import ejw.ServerInterface;
@@ -70,17 +71,85 @@ public class ReportAction extends RequestHandler {
 		
 		print(conn, "单表变量长度大于10", VarKey.CASE_VAR_LENGTH_10, new Dict(), "SELECT * FROM dict WHERE LENGTH(bianliang)>10 AND bianliang NOT LIKE CONCAT('bz_',crf) AND (flag IS NULL OR flag='') ORDER BY dictId;");
 
-		/*待优化 start*/
-		initStmt.executeUpdate("INSERT INTO allvar (bianliang) SELECT DISTINCT bianliang FROM dict WHERE crf IN (SELECT tableName FROM structure WHERE tableType = 2);");
-		initStmt.executeUpdate("INSERT INTO allvar (bianliang) SELECT bianliang FROM dict WHERE crf IN (SELECT tableName FROM structure WHERE tableType != 2);");
-		print(conn, "flag表与非flag表的重变量", VarKey.CASE_ALL_VAR_REPEAT, new Dict(), "select * from dict where bianliang IN (select a1.bianliang from allvar a1,allvar a2 where a1.dictId != a2.dictId AND a1.bianliang = a2.bianliang) order by bianliang,dictId;");
 		
 		initStmt.executeUpdate("INSERT INTO flagvar (bianliang,originId) SELECT CONCAT(bianliang,flag),dictId FROM dict WHERE crf IN (SELECT tableName FROM structure WHERE tableType = 2);");
-		print(conn, "所有Flag表的重变量",VarKey.CASE_FLAG_VAR_REPEAT, new Dict(), "SELECT * FROM dict WHERE dictId IN(SELECT f1.originId FROM flagvar f1,flagvar f2 WHERE f1.dictId != f2.dictId AND f1.bianliang = f2.bianliang) ORDER BY bianliang,dictId;");
+		ResultSet originIds = initStmt.executeQuery("SELECT f1.originId FROM flagvar f1,flagvar f2 WHERE f1.dictId != f2.dictId AND f1.bianliang = f2.bianliang;");
+		ResultSetMetaData originRsmd = originIds.getMetaData();
+		ArrayList<String> originIdList = Lists.newArrayList();
+		while (originIds.next()) {
+			if (originIds.getObject(originRsmd.getColumnName(1)) != null) {
+				originIdList.add(originIds.getObject(originRsmd.getColumnName(1)).toString().trim());
+			}
+		}
+		if(originIdList.size() > 0){
+			String originIdStr = "";
+			for(int i=0; i <originIdList.size(); i++){
+				originIdStr += originIdList.get(i);
+				if(i != originIdList.size()-1){
+					originIdStr += ",";
+				}
+			}
+			
+			print(conn, "所有Flag表的重变量",VarKey.CASE_FLAG_VAR_REPEAT, new Dict(), "SELECT * FROM dict WHERE dictId IN("+originIdStr+") ORDER BY bianliang,dictId;");
+		}
 		
-
-		print(conn, "flag表的变量长度不一致", VarKey.CASE_SAME_VAR_LENGTH, new Dict(), "SELECT DISTINCT d1.* FROM (SELECT * FROM dict WHERE flag is not NULL AND flag !='') AS d1,(SELECT * FROM dict WHERE flag is not NULL AND flag !='') AS d2 WHERE (d1.dictId != d2.dictId AND d1.len != d2.len AND d1.bianliang = d2.bianliang AND d1.flag != d2.flag AND d1.crf = d2.crf) ORDER BY bianliang,dictId;");
-		/*待优化 end*/
+		ResultSet flagTables = initStmt.executeQuery("SELECT tableName FROM structure WHERE tableType = 2");
+		ResultSetMetaData flagTablesRsmd = flagTables.getMetaData();
+		ArrayList<String> tablesList = Lists.newArrayList();
+		while (flagTables.next()) {
+			if (flagTables.getObject(flagTablesRsmd.getColumnName(1)) != null) {
+				tablesList.add(flagTables.getObject(flagTablesRsmd.getColumnName(1)).toString().trim());
+			}
+		}
+		if(tablesList.size() > 0){
+			for(int i = 0; i<tablesList.size(); i++){
+				initStmt.executeUpdate("INSERT INTO allvar (bianliang) SELECT DISTINCT bianliang FROM dict WHERE crf ='"+ tablesList.get(i) +"';");
+			}
+		}
+		initStmt.executeUpdate("INSERT INTO allvar (bianliang) SELECT bianliang FROM dict WHERE crf IN (SELECT tableName FROM structure WHERE tableType != 2);");
+		ResultSet notFlagTables = initStmt.executeQuery("select a1.bianliang from allvar a1,allvar a2 where a1.dictId != a2.dictId AND a1.bianliang = a2.bianliang");
+		ResultSetMetaData notFlagTablesRsmd = notFlagTables.getMetaData();
+		ArrayList<String> notFlagTableList = Lists.newArrayList();
+		while (notFlagTables.next()) {
+			if (notFlagTables.getObject(notFlagTablesRsmd.getColumnName(1)) != null) {
+				notFlagTableList.add(notFlagTables.getObject(notFlagTablesRsmd.getColumnName(1)).toString().trim());
+			}
+		}
+		if(notFlagTableList.size() > 0){
+			String notFlagTableStr = "";
+			for(int i=0; i<notFlagTableList.size(); i++){
+				notFlagTableStr += "'"+notFlagTableList.get(i)+"'";
+				if(i != notFlagTableList.size()-1){
+					notFlagTableStr += ",";
+				}
+			}
+			print(conn, "flag表与非flag表的重变量", VarKey.CASE_ALL_VAR_REPEAT, new Dict(), "select * from dict where bianliang IN ("+notFlagTableStr+") ORDER BY bianliang,dictId;");
+		}
+		
+		
+		ArrayList<String> flagLengthIdList = Lists.newArrayList();
+		if(tablesList.size() > 0){
+			for(int i=0; i<tablesList.size(); i++){
+				ResultSet flagLengthIds = initStmt.executeQuery("SELECT DISTINCT d1.dictId FROM (SELECT * FROM dict WHERE flag is not NULL AND flag !='') AS d1,(SELECT * FROM dict WHERE flag is not NULL AND flag !='') AS d2 WHERE (d1.bianliang = d2.bianliang AND d1.crf = d2.crf AND d1.len != d2.len);");
+				ResultSetMetaData flagLengthRsmd = flagLengthIds.getMetaData();
+				while (flagLengthIds.next()) {
+					if (flagLengthIds.getObject(flagLengthRsmd.getColumnName(1)) != null) {
+						flagLengthIdList.add(flagLengthIds.getObject(flagLengthRsmd.getColumnName(1)).toString().trim());
+					}
+				}
+			}
+		}
+		if(flagLengthIdList.size() > 0){
+			String flagLengthIdStr = "";
+			for(int i=0; i<flagLengthIdList.size(); i++){
+				flagLengthIdStr += flagLengthIdList.get(i);
+				if(i != flagLengthIdList.size() - 1){
+					flagLengthIdStr += ",";
+				}
+			}
+			print(conn, "flag表的变量长度不一致", VarKey.CASE_SAME_VAR_LENGTH, new Dict(), "SELECT * FROM DICT WHERE dictId IN("+flagLengthIdStr+") ORDER BY bianliang,dictId;");
+		}
+		
 		
 		ResultSet rs4 = initStmt.executeQuery("SELECT dictId,bvalue FROM dict WHERE bvalue IS NOT NULL AND bvalue != '';");
 		checkRule(rs4);
@@ -94,7 +163,6 @@ public class ReportAction extends RequestHandler {
 				}
 			}
 		}
-		System.out.println("bValueIds == > " +bValueIds);
 		if (!"".equals(bValueIds) && bValueIds != null) {
 			print(conn, "bvalue编写不规范", VarKey.CASE_B_VAR_RULE, new Dict(), "SELECT * FROM dict WHERE dictId IN ("+ bValueIds + ") ORDER BY dictId;");
 		}
@@ -121,16 +189,32 @@ public class ReportAction extends RequestHandler {
 				i++;
 			}
 		}
-		System.out.println("bdIds == "+bdIds);
 		if (!"".equals(bdIds) && bdIds != null) {			
 			print(conn, "变量字典中有英文的逗号和英文的双引号", VarKey.CASE_DICT_HAS_BD, new Dict(), "SELECT * FROM dict WHERE dictId IN ("+bdIds+");");		
 		}
 		
-		/*待优化 start*/
+		
 		if(WebConfig.checkFlag){
-			print(conn, "变量字典中访视标记不能形同V1，V2...", VarKey.CASE_FLAG_V1_V2,new Dict(), "select * from dict where dictId in (select min(dictId) from dict where flag not like 'v%' AND flag != '' AND flag IS NOT NULL group by flag);");
+			ResultSet flagIds = initStmt.executeQuery("select min(dictId) from dict where flag not like 'v%' AND flag != '' AND flag IS NOT NULL group by flag");
+			ResultSetMetaData flagIdRsmd = flagIds.getMetaData();
+			ArrayList<String> flagIdList = Lists.newArrayList();
+			while (flagIds.next()) {
+				if (flagIds.getObject(flagIdRsmd.getColumnName(1)) != null) {
+					flagIdList.add(flagIds.getObject(flagIdRsmd.getColumnName(1)).toString().trim());
+				}
+			}
+			if(flagIdList.size() > 0){
+				String flagIdStr = "";
+				for(int j=0;j<flagIdList.size();j++){
+					flagIdStr += flagIdList.get(j);
+					if(j != flagIdList.size() - 1){
+						flagIdStr += ",";
+					}
+				}
+				print(conn, "变量字典中访视标记不能形同V1，V2...", VarKey.CASE_FLAG_V1_V2,new Dict(), "select * from dict where dictId IN ("+flagIdStr+");");
+			}
 		}
-		/*待优化 end*/
+
 		
 		print(conn, "变量字典比表结构表多余的表",VarKey.CASE_DICT_MORE_STRUCTURE,new Dict(),"SELECT * FROM dict WHERE crf NOT IN(SELECT tableName FROM structure)GROUP BY crf ORDER BY dictId;");
 		
@@ -218,8 +302,7 @@ public class ReportAction extends RequestHandler {
 			while (rs.next()) {
 				String outString = "";
 				if (rs.getObject(rsmd.getColumnName(2)) != null) {
-					outString = rs.getObject(rsmd.getColumnName(2)).toString()
-							.trim();
+					outString = rs.getObject(rsmd.getColumnName(2)).toString().trim();
 				}
 				String[] bValues = outString.split(";");
 				eachValue: for (String bValue : bValues) {
@@ -254,7 +337,6 @@ public class ReportAction extends RequestHandler {
 						outString = rs.getObject(rsmd.getColumnName(j)).toString();
 						if(outString.contains(",") || outString.contains("\"")){
 							bdIdMap.put(rs.getInt(rsmd.getColumnName(1)), j);
-							System.out.println("rsmd.getColumnName(j) == "+rsmd.getColumnName(j) +"    j == "+j);
 						}
 					}
 				}

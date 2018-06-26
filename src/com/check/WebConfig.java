@@ -8,10 +8,10 @@ import java.util.Map;
 public class WebConfig {
 	
 	//核查课题名称
-	public static String PROJECTNAME = "P201635_李氏大药厂_FiberSense_糖尿病人群";
+	public static String PROJECTNAME = "E201808_北京星昊_磷酸奥司他韦口崩片";
 	
 	//是否是PDC课题:true为PDC，false为EDC
-	public static boolean ISPDC = true;
+	public static boolean ISPDC = false;
 	
 	//是否检查：变量字典中访视标记不能形同V1，V2...true为检查flag标记，false为不检查
 	public static boolean checkFlag = true;
