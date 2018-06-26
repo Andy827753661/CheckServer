@@ -49,9 +49,9 @@ public class ReportAction extends RequestHandler {
 		initStmt.execute("DELETE FROM DICT WHERE CRF IN ('SUBJECT','SITE');");
 		initStmt.execute("DELETE FROM STRUCTURE WHERE TABLENAME IN ('SUBJECT','SITE');");
 		
-		/*所有Flag表的重变量 START*/
-		initStmt.executeUpdate("INSERT INTO FLAGVAR (BIANLIANG,ORIGINID) SELECT CONCAT(BIANLIANG,FLAG),DICTID FROM DICT WHERE CRF IN (SELECT TABLENAME FROM STRUCTURE WHERE TABLETYPE = 2);");
-		ResultSet originIds = initStmt.executeQuery("SELECT F1.ORIGINID FROM FLAGVAR F1,FLAGVAR F2 WHERE F1.BIANLIANG = F2.BIANLIANG AND F1.DICTID != F2.DICTID;");
+		/*Flag表的重变量 START*/
+		initStmt.executeUpdate("INSERT INTO FLAGVAR (BIANLIANG,ORIGINID) SELECT CONCAT(BIANLIANG,FLAG),DICTID FROM DICT INNER JOIN STRUCTURE ON DICT.CRF=STRUCTURE.TABLENAME WHERE TABLETYPE = 2;");
+		ResultSet originIds = initStmt.executeQuery("SELECT A.ORIGINID FROM FLAGVAR A,FLAGVAR B WHERE A.BIANLIANG = B.BIANLIANG AND A.DICTID != B.DICTID;");
 		ResultSetMetaData originRsmd = originIds.getMetaData();
 		ArrayList<String> originIdList = Lists.newArrayList();
 		while (originIds.next()) {
@@ -68,9 +68,9 @@ public class ReportAction extends RequestHandler {
 				}
 			}
 			
-			print(conn, "所有Flag表的重变量",VarKey.CASE_FLAG_VAR_REPEAT, new Dict(), "SELECT * FROM DICT WHERE DICTID IN("+originIdStr+") ORDER BY BIANLIANG,DICTID;");
+			print(conn, "Flag表的重变量",VarKey.CASE_FLAG_VAR_REPEAT, new Dict(), "SELECT * FROM DICT WHERE DICTID IN("+originIdStr+") ORDER BY BIANLIANG,DICTID;");
 		}
-		/*所有Flag表的重变量 END*/
+		/*Flag表的重变量 END*/
 		
 		
 		/*flag表与非flag表的重变量 START*/
@@ -87,7 +87,7 @@ public class ReportAction extends RequestHandler {
 				initStmt.executeUpdate("INSERT INTO ALLVAR (BIANLIANG) SELECT DISTINCT BIANLIANG FROM DICT WHERE CRF ='"+ tablesList.get(i) +"';");
 			}
 		}
-		initStmt.executeUpdate("INSERT INTO ALLVAR (BIANLIANG) SELECT BIANLIANG FROM DICT WHERE CRF IN (SELECT TABLENAME FROM STRUCTURE WHERE TABLETYPE != 2);");
+		initStmt.executeUpdate("INSERT INTO ALLVAR (BIANLIANG) SELECT BIANLIANG FROM DICT INNER JOIN STRUCTURE ON DICT.CRF=STRUCTURE.TABLENAME WHERE TABLETYPE != 2;");
 		ResultSet notFlagTables = initStmt.executeQuery("SELECT A.BIANLIANG FROM ALLVAR A,ALLVAR B WHERE A.DICTID != B.DICTID AND A.BIANLIANG = B.BIANLIANG");
 		ResultSetMetaData notFlagTablesRsmd = notFlagTables.getMetaData();
 		ArrayList<String> notFlagTableList = Lists.newArrayList();
@@ -135,10 +135,10 @@ public class ReportAction extends RequestHandler {
 		/*flag表的变量长度不一致 END*/
 		
 		
-		print(conn, "表结构表中flag标识与变量字典中不一致", VarKey.CASE_EQUAL_IS_FLAG, new Dict(), "SELECT * FROM DICT WHERE CRF IN (SELECT TABLENAME FROM STRUCTURE WHERE TABLETYPE = 2) AND (FLAG IS NULL OR FLAG ='' ) ORDER BY DICTID;");
+		print(conn, "表结构表中flag标识与变量字典中不一致", VarKey.CASE_EQUAL_IS_FLAG, new Dict(), "SELECT * FROM DICT INNER JOIN STRUCTURE ON DICT.CRF=STRUCTURE.TABLENAME WHERE STRUCTURE.TABLETYPE=2 AND (DICT.FLAG IS NULL OR DICT.FLAG ='') ORDER BY DICTID;");
 
 		
- 		print(conn, "表结构表中非flag标识与变量字典中不一致", VarKey.CASE_EQUAL_NOT_FLAG, new Dict(), "SELECT * FROM DICT WHERE CRF IN (SELECT TABLENAME FROM STRUCTURE WHERE TABLETYPE != 2) AND FLAG IS NOT NULL AND FLAG !='' ORDER BY DICTID;");
+ 		print(conn, "表结构表中非flag标识与变量字典中不一致", VarKey.CASE_EQUAL_NOT_FLAG, new Dict(), "SELECT * FROM DICT INNER JOIN STRUCTURE ON DICT.CRF=STRUCTURE.TABLENAME WHERE TABLETYPE != 2 AND FLAG IS NOT NULL AND FLAG !='' ORDER BY DICTID;");
 
 		
 		print(conn, "变量名与表名一致", VarKey.CASE_TABLE_VAR_NAME, new Dict(), "SELECT * FROM DICT WHERE BIANLIANG=CRF ORDER BY DICTID;");
@@ -148,8 +148,7 @@ public class ReportAction extends RequestHandler {
 			print(conn, "PDC课题变量名以表名开头", VarKey.CASE_TABLE_START_VAR, new Dict(), "SELECT * FROM DICT WHERE BIANLIANG LIKE CONCAT(CRF,'%') AND BIANLIANG NOT LIKE CONCAT(CRF,'_num') ORDER BY DICTID;");
 		}
 
-		
-		print(conn, "变量名含有关键字", VarKey.CASE_VAR_HAS_KEY, new Dict(), "SELECT * FROM DICT WHERE BIANLIANG IN (SELECT WORD FROM KEYWORD) ORDER BY DICTID;");
+		print(conn, "变量名含有关键字", VarKey.CASE_VAR_HAS_KEY, new Dict(), "SELECT * FROM DICT INNER JOIN KEYWORD ON DICT.BIANLIANG = KEYWORD.WORD ORDER BY DICT.DICTID;");
 
 		
 		print(conn, "多表变量长度大于8", VarKey.CASE_VAR_LENGTH_8 , new Dict(), "SELECT * FROM DICT WHERE LENGTH(BIANLIANG)>8 AND BIANLIANG NOT LIKE CONCAT('bz_',CRF) AND FLAG IS NOT NULL AND FLAG!='' ORDER BY DICTID;");
@@ -225,7 +224,7 @@ public class ReportAction extends RequestHandler {
 		print(conn, "变量字典比表结构表多余的表",VarKey.CASE_DICT_MORE_STRUCTURE,new Dict(),"SELECT * FROM DICT WHERE CRF NOT IN(SELECT TABLENAME FROM STRUCTURE)GROUP BY CRF ORDER BY DICTID;");
 		
 		/**********Structrue**********/
-		print(conn, "表名含有关键字", VarKey.CASE_TABLE_HAS_KEY, new Structrue(), "SELECT * FROM STRUCTURE WHERE TABLENAME IN (SELECT WORD FROM KEYWORD) ORDER BY ID");
+		print(conn, "表名含有关键字", VarKey.CASE_TABLE_HAS_KEY, new Structrue(), "SELECT * FROM STRUCTURE INNER JOIN KEYWORD ON STRUCTURE.TABLENAME=KEYWORD.WORD ORDER BY STRUCTURE.ID");
 
 		
 		print(conn, "表结构表中的“表类型”与“标识”不一致", VarKey.CASE_TYPE_FLAG, new Structrue(), "SELECT * FROM STRUCTURE WHERE (TABLETYPE = 1 AND (TABLELX != '单表' OR (TABLEITEM IS NOT NULL AND TABLEITEM !=''))) OR (TABLETYPE = 2 AND(TABLELX !='多表'   OR TABLEITEM != 'flag')) OR (TABLETYPE = 3 AND(TABLELX !='多表' OR TABLEITEM NOT LIKE '%_num'));");
