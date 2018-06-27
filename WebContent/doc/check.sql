@@ -23,7 +23,11 @@ CREATE TABLE `allvar` (
   `dictId` int(6) unsigned NOT NULL AUTO_INCREMENT,
   `bianliang` char(20) DEFAULT NULL,
   PRIMARY KEY (`dictId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1399 DEFAULT CHARSET=gb2312;
+) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
+
+#
+# Dumping data for table allvar
+#
 
 
 #
@@ -47,6 +51,10 @@ CREATE TABLE `dict` (
   PRIMARY KEY (`dictId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6287 DEFAULT CHARSET=gb2312;
 
+#
+# Dumping data for table dict
+#
+
 
 #
 # Table structure for table flagvar
@@ -55,9 +63,14 @@ CREATE TABLE `dict` (
 CREATE TABLE `flagvar` (
   `dictId` int(6) unsigned NOT NULL AUTO_INCREMENT,
   `bianliang` char(20) DEFAULT NULL,
+  `crf` char(20) DEFAULT NULL,
   `originId` int(6) DEFAULT NULL,
   PRIMARY KEY (`dictId`)
-) ENGINE=InnoDB AUTO_INCREMENT=8192 DEFAULT CHARSET=gb2312;
+) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
+
+#
+# Dumping data for table flagvar
+#
 
 
 #
@@ -403,6 +416,9 @@ CREATE TABLE `structure` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=gb2312;
 
+#
+# Dumping data for table structure
+#
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

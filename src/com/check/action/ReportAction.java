@@ -41,6 +41,7 @@ public class ReportAction extends RequestHandler {
 	private List<String> sTagList = new ArrayList<>();
 
 	public String init(ServerInterface serverInterface) throws Exception {
+		long startTime = System.currentTimeMillis();
 		System.err.println("核查开始");
 		Connection conn = DBManager.getConnection();
 		Statement initStmt = conn.createStatement();
@@ -49,31 +50,7 @@ public class ReportAction extends RequestHandler {
 		initStmt.execute("DELETE FROM DICT WHERE CRF IN ('SUBJECT','SITE');");
 		initStmt.execute("DELETE FROM STRUCTURE WHERE TABLENAME IN ('SUBJECT','SITE');");
 		
-		/*Flag表的重变量 START*/
-		initStmt.executeUpdate("INSERT INTO FLAGVAR (BIANLIANG,ORIGINID) SELECT CONCAT(BIANLIANG,FLAG),DICTID FROM DICT INNER JOIN STRUCTURE ON DICT.CRF=STRUCTURE.TABLENAME WHERE TABLETYPE = 2;");
-		ResultSet originIds = initStmt.executeQuery("SELECT A.ORIGINID FROM FLAGVAR A,FLAGVAR B WHERE A.BIANLIANG = B.BIANLIANG AND A.DICTID != B.DICTID;");
-		ResultSetMetaData originRsmd = originIds.getMetaData();
-		ArrayList<String> originIdList = Lists.newArrayList();
-		while (originIds.next()) {
-			if (originIds.getObject(originRsmd.getColumnName(1)) != null) {
-				originIdList.add(originIds.getObject(originRsmd.getColumnName(1)).toString().trim());
-			}
-		}
-		if(originIdList.size() > 0){
-			String originIdStr = "";
-			for(int i=0; i <originIdList.size(); i++){
-				originIdStr += originIdList.get(i);
-				if(i != originIdList.size()-1){
-					originIdStr += ",";
-				}
-			}
-			
-			print(conn, "Flag表的重变量",VarKey.CASE_FLAG_VAR_REPEAT, new Dict(), "SELECT * FROM DICT WHERE DICTID IN("+originIdStr+") ORDER BY BIANLIANG,DICTID;");
-		}
-		/*Flag表的重变量 END*/
 		
-		
-		/*flag表与非flag表的重变量 START*/
 		ResultSet flagTables = initStmt.executeQuery("SELECT TABLENAME FROM STRUCTURE WHERE TABLETYPE = 2;");
 		ResultSetMetaData flagTablesRsmd = flagTables.getMetaData();
 		ArrayList<String> tablesList = Lists.newArrayList();
@@ -82,6 +59,35 @@ public class ReportAction extends RequestHandler {
 				tablesList.add(flagTables.getObject(flagTablesRsmd.getColumnName(1)).toString().trim());
 			}
 		}
+		/*Flag表内的重变量 START*/
+		initStmt.executeUpdate("INSERT INTO FLAGVAR (BIANLIANG,crf,ORIGINID) SELECT CONCAT(BIANLIANG,FLAG),crf,DICTID FROM DICT INNER JOIN STRUCTURE ON DICT.CRF=STRUCTURE.TABLENAME WHERE TABLETYPE = 2;");
+		if(tablesList.size() > 0){
+			ArrayList<String> originIdList = Lists.newArrayList();
+			for(int i=0; i<tablesList.size(); i++){
+				ResultSet originIds = initStmt.executeQuery("SELECT A.ORIGINID FROM (SELECT * FROM FLAGVAR WHERE crf='"+tablesList.get(i)+"') AS A,(SELECT * FROM FLAGVAR WHERE crf='"+tablesList.get(i)+"') AS B WHERE A.BIANLIANG = B.BIANLIANG AND A.DICTID != B.DICTID;");
+				ResultSetMetaData originRsmd = originIds.getMetaData();
+				while (originIds.next()) {
+					if (originIds.getObject(originRsmd.getColumnName(1)) != null) {
+						originIdList.add(originIds.getObject(originRsmd.getColumnName(1)).toString().trim());
+					}
+				}
+			}
+			if(originIdList.size() > 0){
+				String originIdStr = "";
+				for(int i=0; i <originIdList.size(); i++){
+					originIdStr += originIdList.get(i);
+					if(i != originIdList.size()-1){
+						originIdStr += ",";
+					}
+				}
+				
+				print(conn, "Flag表内的重变量",VarKey.CASE_FLAG_VAR_REPEAT, new Dict(), "SELECT * FROM DICT WHERE DICTID IN("+originIdStr+") ORDER BY BIANLIANG,DICTID;");
+			}
+		}
+		/*Flag表内的重变量 END*/
+		
+		
+		/*表间重变量 START*/
 		if(tablesList.size() > 0){
 			for(int i = 0; i<tablesList.size(); i++){
 				initStmt.executeUpdate("INSERT INTO ALLVAR (BIANLIANG) SELECT DISTINCT BIANLIANG FROM DICT WHERE CRF ='"+ tablesList.get(i) +"';");
@@ -90,30 +96,30 @@ public class ReportAction extends RequestHandler {
 		initStmt.executeUpdate("INSERT INTO ALLVAR (BIANLIANG) SELECT BIANLIANG FROM DICT INNER JOIN STRUCTURE ON DICT.CRF=STRUCTURE.TABLENAME WHERE TABLETYPE != 2;");
 		ResultSet notFlagTables = initStmt.executeQuery("SELECT A.BIANLIANG FROM ALLVAR A,ALLVAR B WHERE A.DICTID != B.DICTID AND A.BIANLIANG = B.BIANLIANG");
 		ResultSetMetaData notFlagTablesRsmd = notFlagTables.getMetaData();
-		ArrayList<String> notFlagTableList = Lists.newArrayList();
+		ArrayList<String> bianliangList = Lists.newArrayList();
 		while (notFlagTables.next()) {
 			if (notFlagTables.getObject(notFlagTablesRsmd.getColumnName(1)) != null) {
-				notFlagTableList.add(notFlagTables.getObject(notFlagTablesRsmd.getColumnName(1)).toString().trim());
+				bianliangList.add(notFlagTables.getObject(notFlagTablesRsmd.getColumnName(1)).toString().trim());
 			}
 		}
-		if(notFlagTableList.size() > 0){
+		if(bianliangList.size() > 0){
 			String notFlagTableStr = "";
-			for(int i=0; i<notFlagTableList.size(); i++){
-				notFlagTableStr += "'"+notFlagTableList.get(i)+"'";
-				if(i != notFlagTableList.size()-1){
+			for(int i=0; i<bianliangList.size(); i++){
+				notFlagTableStr += "'"+bianliangList.get(i)+"'";
+				if(i != bianliangList.size()-1){
 					notFlagTableStr += ",";
 				}
 			}
-			print(conn, "flag表与非flag表的重变量", VarKey.CASE_ALL_VAR_REPEAT, new Dict(), "SELECT * FROM DICT WHERE BIANLIANG IN ("+notFlagTableStr+") ORDER BY BIANLIANG,DICTID;");
+			print(conn, "表间重变量", VarKey.CASE_ALL_VAR_REPEAT, new Dict(), "SELECT * FROM DICT WHERE BIANLIANG IN ("+notFlagTableStr+") ORDER BY BIANLIANG,DICTID;");
 		}
-		/*flag表与非flag表的重变量 END*/
+		/*表间重变量 END*/
 		
 		
 		/*flag表的变量长度不一致 START*/
 		ArrayList<String> flagLengthIdList = Lists.newArrayList();
 		if(tablesList.size() > 0){
 			for(int i=0; i<tablesList.size(); i++){
-				ResultSet flagLengthIds = initStmt.executeQuery("SELECT DISTINCT D1.DICTID FROM (SELECT * FROM DICT WHERE FLAG IS NOT NULL AND FLAG !='') AS D1,(SELECT * FROM DICT WHERE FLAG IS NOT NULL AND FLAG !='') AS D2 WHERE (D1.BIANLIANG = D2.BIANLIANG AND D1.CRF = D2.CRF AND D1.LEN != D2.LEN);");
+				ResultSet flagLengthIds = initStmt.executeQuery("SELECT DISTINCT A.DICTID FROM (SELECT * FROM DICT WHERE CRF='"+tablesList.get(i)+"') AS A,(SELECT * FROM DICT WHERE CRF='"+tablesList.get(i)+"') AS B WHERE A.BIANLIANG = B.BIANLIANG AND A.LEN != B.LEN;");
 				ResultSetMetaData flagLengthRsmd = flagLengthIds.getMetaData();
 				while (flagLengthIds.next()) {
 					if (flagLengthIds.getObject(flagLengthRsmd.getColumnName(1)) != null) {
@@ -243,12 +249,17 @@ public class ReportAction extends RequestHandler {
 		
 		DBManager.closeConnection(conn);
 		
+		System.err.println("核查结束");
+		long endTime = System.currentTimeMillis();
+		long time = endTime - startTime; 
+		System.err.println("核查耗时：" + time +" ms");
+		
 		serverInterface.setAttribute("data", checkResult);
 		serverInterface.setAttribute("dTag", dTagList);
 		serverInterface.setAttribute("sTag", sTagList);
 		serverInterface.setAttribute("bdTag", bdIdMap);
 		serverInterface.setAttribute("count", questionCount);
-		System.err.println("核查结束");
+		serverInterface.setAttribute("time", time);
 		
 		return "/WEB-INF/report.jsp";
 	}

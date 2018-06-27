@@ -16,6 +16,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="${ejwContextPath}/script/jquery-1.5.js"></script>
 <title><%=WebConfig.PROJECTNAME + WebConfig.TITLE + titleDate%></title>
 <style type="text/css">
 table {
@@ -80,6 +81,11 @@ textarea {
 	font-size: larger;
 }
 </style>
+<script type="text/javascript">
+	$(document).ready(function(){
+		alert("核查耗时：" + ${time} +" ms !");
+	});
+</script>
 </head>
 <body>
 	<%!String fontSize = WebConfig.getFontSize();%>
