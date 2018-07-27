@@ -8,7 +8,7 @@ import java.util.Map;
 public class WebConfig {
 	
 	//核查课题名称
-	public static String PROJECTNAME = "E201808_北京星昊_磷酸奥司他韦口崩片";
+	public static String PROJECTNAME = "E201808_北京星昊_磷酸奥司他韦口崩片(预试验)空白血";
 	
 	//是否是PDC课题:true为PDC，false为EDC
 	public static boolean ISPDC = false;
